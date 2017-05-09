@@ -28,6 +28,7 @@ namespace Karteikarten_APP
 
         private void Button_Click_NeueKategorie(object sender, RoutedEventArgs e)
         {
+            // Huhu
             var wnd = new Kategorieansicht();
             wnd.Show();
             sqq.ErstelleKategorie();
