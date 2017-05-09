@@ -24,14 +24,49 @@ namespace Karteikarten_APP
         public NeueKategorie()
         {
             InitializeComponent();
+            List<int> StapelIds = new List<int>(sqq.HoleAlleStapelIDs());
+            ComboBoxItem cbi = new ComboBoxItem();
+
+            sqlkram.VerbindungAufbauen();
+            Console.WriteLine("Stapelanz: " + sqq.ZaehleStapel());
+            for (int i = 0; i < sqq.ZaehleStapel(); i++)
+            {
+                Console.WriteLine("Füge Kategorie " + sqq.zeigeKategorie(StapelIds[i]) + " hinzu");
+                //combo.Items.Add(sqq.zeigeKategorie(i));
+
+                if (!sqq.HatUnter(StapelIds[i]))
+                {
+                    combo.Items.Add(sqq.zeigeKategorie(StapelIds[i]));
+                    sqlkram.VerbindungBeenden();
+                }
+            }
+
+
         }
 
-        private void Button_Click_NeueKategorie(object sender, RoutedEventArgs e)
+        private void Button_Click_Add(object sender, RoutedEventArgs e)
         {
-            // Huhu
-            var wnd = new Kategorieansicht();
-            wnd.Show();
-            sqq.ErstelleKategorie();
+            string kategorie=textboxKategorie.Text;
+
+            bool hatUeber=true;
+            if((string)combo.SelectedItem == "standard")
+            //if (combo.Items.CurrentItem =="standard")
+            {
+                hatUeber = false;
+            }
+
+
+            sqq.ErstelleKategorie(kategorie,3,false, hatUeber);
+        }
+
+        private void Button_Click_Close(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void testbutton_Click(object sender, RoutedEventArgs e)
+        {
+            testlabel.Content = textboxKategorie.Text;
         }
     }
 }

@@ -39,25 +39,28 @@ namespace Karteikarten_APP
         {
             InitializeComponent();
             sqlkram.VerbindungAufbauen();
-            for (int i = 0; i < sqq.ZaehleStapel(); i++)
+            List<int> StapelIds = new List<int>(sqq.HoleAlleStapelIDs());
+
+            for (int i = 0; i <StapelIds.Count(); i++)
             {
                 
-                if (!sqq.hatUeber(i+1))
+                if (!sqq.hatUeber(StapelIds[i]))
                 {
-                    MyButton btn = new MyButton(i + 1);
+                    MyButton btn = new MyButton(StapelIds[i]);
                     btn.Width = 405;
                     btn.Width = listBox.Width - 15;
                     btn.Height = 40;
-                    btn.Name = "Kat" + i;
+                    btn.Name = "Kat" + StapelIds[i];
 
-                    btn.Content = (i + 1) + " : " + sqq.zeigeKategorie(i);
+                    btn.Content = (i ) + " : " + sqq.zeigeKategorie(StapelIds[i]);
                     btn.Visibility = Visibility.Visible;
                     listBox.Items.Add(btn);
-                    StapelID = i + 1;
+                    StapelID = StapelIds[i];
                     btn.Click += oeffneStapel;
                 }
-               sqlkram.VerbindungBeenden();
             }
+
+            sqlkram.VerbindungBeenden();
         }
 
         private void oeffneStapel(object sender, RoutedEventArgs e)
@@ -110,7 +113,8 @@ namespace Karteikarten_APP
 
         private void Button_Click_NeueKategorie(object sender, RoutedEventArgs e)
         {
-
+            var wnd = new NeueKategorie();
+            wnd.Show();
         }
     }
 }

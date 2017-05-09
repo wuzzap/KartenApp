@@ -27,17 +27,13 @@ namespace Karteikarten_APP
         {
             VerbindungAufbauen();
             int max = 0;
-            string sql = "select StapelID from Karten";
+            string sql = "select StapelID from Kategorien";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
-
-                var temp = Convert.ChangeType(reader["StapelID"], typeof(int)) as int?;
-                if (temp > max)
-                    max = (int)temp;
-                //Console.WriteLine(temp);
+                max += 1;
             }
             VerbindungBeenden();
             return max;
@@ -203,7 +199,7 @@ namespace Karteikarten_APP
         {
             VerbindungAufbauen();
             string erg = "";
-            string sql = "select Kategorie from Karten where StapelID=="+(StapelID+1);
+            string sql = "select Kategorie from Kategorien where StapelID=="+(StapelID);
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
 
@@ -233,18 +229,45 @@ namespace Karteikarten_APP
             return erg;
         }
 
-        public void ErstelleKategorie()
+        public void ErstelleKategorie(string Kategorie,int UeberID,bool HatUnter, bool HatUeber)
         {
             VerbindungAufbauen();
             string erg = "";
-            string sql = "INSERT INTO Kategorien(Kategorie,UeberID, HatUnter,HatUeber) VALUES('Kategorie','UeberID', 'false', 'false')";
+            string sql = "INSERT INTO Kategorien(Kategorie,UeberID, HatUnter,HatUeber) VALUES('"+Kategorie+"','"+UeberID+"', '"+HatUnter+"', '"+HatUeber+"')";
                       
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
+            //SQLiteDataReader reader = command.ExecuteReader();
             command.ExecuteNonQuery();
             //command.ExecuteReader();
             VerbindungBeenden();
         }
+
+        public List<int> HoleAlleStapelIDs()
+        {
+            VerbindungAufbauen();
+            List<int> stapelIds = new List<int>();
+            
+            VerbindungAufbauen();
+            int max = 0;
+            //var temp;
+            string sql = "select StapelID from Kategorien";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+                var temp = Convert.ChangeType(reader["StapelID"], typeof(int)) as int?;
+                stapelIds.Add((int)temp);
+
+            }
+            VerbindungBeenden();
+
+
+
+            return stapelIds;
+        }
+
     }
 }
