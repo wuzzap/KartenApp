@@ -1,0 +1,16 @@
+﻿<Window x:Class="Karteikarten_APP.DbInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Karteikarten_APP"
+        mc:Ignorable="d"
+        Title="Datenbank Informationen" Height="300" Width="300">
+    <Grid>
+        <Label Content="Es gibt xxx Karten" Name="anzKarten" HorizontalAlignment="Left" Margin="23,22,0,0" VerticalAlignment="Top" Width="220"/>
+        <Label Content="Es gibt xxx Stapel" Name="anzStapel" HorizontalAlignment="Left" Height="27" Margin="23,53,0,0" VerticalAlignment="Top" Width="208"/>
+        <Button Content="Zurück" HorizontalAlignment="Left" Margin="199,191,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Close"/>
+
+
+    </Grid>
+</Window>
