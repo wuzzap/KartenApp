@@ -5,17 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Karteikarten_APP"
         mc:Ignorable="d"
-        Title="NeueKategorie" Height="351" Width="389">
-    <Grid>
-        <Button Content="Hinzufügen" HorizontalAlignment="Left" Margin="100,190,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Add"/>
+        Title="NeueKategorie" Height="250" Width="400">
+    <Grid Margin="0,0,2,4">
+        <Button Content="Hinzufügen" HorizontalAlignment="Left" Margin="50,163,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Add" RenderTransformOrigin="0.467,7.727"/>
 
-        <Label Content="Name: " HorizontalAlignment="Left" Height="30" Margin="25,70,0,0" VerticalAlignment="Top" Width="45"/>
-        <TextBox Name="textboxKategorie" HorizontalAlignment="Left" Height="23" Margin="155,70,0,0" TextWrapping="Wrap" Text="Bitte Kategorienamen eingeben" VerticalAlignment="Top" Width="195"/>
+        <Label Content="Name: " HorizontalAlignment="Left" Height="30" Margin="32,25,0,0" VerticalAlignment="Top" Width="45"/>
+        <TextBox Name="Kategorie" HorizontalAlignment="Left" Height="23" Margin="160,32,0,0" TextWrapping="Wrap" Text="Bitte Kategorienamen eingeben" VerticalAlignment="Top" Width="195"/>
 
-        <Button Content="Close" HorizontalAlignment="Left" Margin="295,275,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Close"/>
-        <Label Name="testlabel" Content="Überkategorie :" HorizontalAlignment="Left" Margin="32,114,0,0" VerticalAlignment="Top" Width="108"/>
-        <Button Name="testbutton" Content="TestIt!" HorizontalAlignment="Left" Margin="220,190,0,0" VerticalAlignment="Top" Width="75" Click="testbutton_Click"/>
-        <ComboBox Name="combo" HorizontalAlignment="Left" Margin="155,118,0,0" VerticalAlignment="Top" Width="195"/>
+        <Button Content="Close" HorizontalAlignment="Left" Margin="280,163,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Close" RenderTransformOrigin="1.333,9.545"/>
+        <Label Content="Überkategorie :" HorizontalAlignment="Left" Margin="32,74,0,0" VerticalAlignment="Top" Width="108"/>
+       
+        <ComboBox Name="combo" HorizontalAlignment="Left" Margin="160,74,0,0" VerticalAlignment="Top" Width="195"/>
+ 
+        <Label Name="message_lbl" HorizontalAlignment="Left" Margin="25,118,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.658,1.538" Width="330" Height="27"/>
 
 
     </Grid>

@@ -46,17 +46,30 @@ namespace Karteikarten_APP
                 
                 if (!sqq.hatUeber(StapelIds[i]))
                 {
-                    MyButton btn = new MyButton(StapelIds[i]);
-                    btn.Width = 405;
-                    btn.Width = listBox.Width - 15;
-                    btn.Height = 40;
-                    btn.Name = "Kat" + StapelIds[i];
+                    MyButton KategorieButton = new MyButton(StapelIds[i]);
 
-                    btn.Content = (i ) + " : " + sqq.zeigeKategorie(StapelIds[i]);
-                    btn.Visibility = Visibility.Visible;
-                    listBox.Items.Add(btn);
+                    KategorieButton.Width = 405;
+                    KategorieButton.Width = KategorieBox.Width - 15;
+                    KategorieButton.Height = 40;
+                    KategorieButton.Name = "Kat" + StapelIds[i];
+                    KategorieButton.Content = (i ) + " : " + sqq.zeigeKategorie(StapelIds[i]);
+                    KategorieButton.Visibility = Visibility.Visible;
+                    KategorieBox.Items.Add(KategorieButton);
+
+                    MyButton FragenButton = new MyButton(StapelIds[i]);
+
+                    FragenButton.Width = FragenBox.Width - 25;
+                    FragenButton.Height = 40;
+                    FragenButton.Name = "Fra" + StapelIds[i];
+                    FragenButton.Content = sqq.ZaehleKarten(StapelIds[i]);
+                    FragenButton.Visibility = Visibility.Visible;
+                    FragenBox.Items.Add(FragenButton);
+
+
                     StapelID = StapelIds[i];
-                    btn.Click += oeffneStapel;
+                    KategorieButton.Click += oeffneStapel;
+                    FragenButton.Click += oeffneStapel;
+
                 }
             }
 
@@ -73,25 +86,40 @@ namespace Karteikarten_APP
             }
             else
             {
-                listBox.Items.Clear();
+                List<int> StapelIds = new List<int>(sqq.HoleStapelIDs(i));
+
+                KategorieBox.Items.Clear();
+                FragenBox.Items.Clear();
                 InitializeComponent();
                 sqlkram.VerbindungAufbauen();
-                Console.WriteLine("wtfiii "+i);
-                for (int x = 0; x < sqq.ZaehleStapel(i); x++)
+             
+                for (int x = 0; x < StapelIds.Count(); x++)
                 {
-                    Console.WriteLine("wtfxxxx "+x);
+                   
                     if (!sqq.hatUeber(x + 1))
                     {
-                        MyButton btn = new MyButton(i + 1);
-                        btn.Width = 405;
-                        btn.Width = listBox.Width - 15;
-                        btn.Height = 40;
-                        btn.Name = "Kat" + x;
-                        btn.Content = (x + 1) + " : " + sqq.zeigeUnterKategorien(i);
-                        btn.Visibility = Visibility.Visible;
-                        listBox.Items.Add(btn);
+                        MyButton KategorieButton = new MyButton(i + 1);
+                        
+                        KategorieButton.Width = KategorieBox.Width - 15;
+                        KategorieButton.Height = 40;
+                        KategorieButton.Name = "Kat" + x;
+                        KategorieButton.Content = (x + 1) + " : " + sqq.zeigeKategorie(StapelIds[x]);
+                        KategorieButton.Visibility = Visibility.Visible;
+
+                        MyButton FragenButton = new MyButton(i + 1);
+                        
+                        FragenButton.Width = FragenBox.Width - 25;
+                        FragenButton.Height = 40;
+                        FragenButton.Name = "Fra" + x;
+                        FragenButton.Content = sqq.ZaehleKarten(StapelIds[x]);
+                        FragenButton.Visibility = Visibility.Visible;
+
+
+                        KategorieBox.Items.Add(KategorieButton);
+                        FragenBox.Items.Add(FragenButton);
                         StapelID = i + 1;
-                        btn.Click += oeffneStapel;
+                        KategorieButton.Click += oeffneStapel;
+                        FragenButton.Click += oeffneStapel;
                     }
                     sqlkram.VerbindungBeenden();
                 }
@@ -114,6 +142,12 @@ namespace Karteikarten_APP
         private void Button_Click_NeueKategorie(object sender, RoutedEventArgs e)
         {
             var wnd = new NeueKategorie();
+            wnd.Show();
+        }
+
+        private void Button_Click_NeueKarte(object sender, RoutedEventArgs e)
+        {
+            var wnd = new NeueKarte();
             wnd.Show();
         }
     }

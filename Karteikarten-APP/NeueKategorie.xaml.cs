@@ -28,13 +28,9 @@ namespace Karteikarten_APP
             ComboBoxItem cbi = new ComboBoxItem();
 
             sqlkram.VerbindungAufbauen();
-            Console.WriteLine("Stapelanz: " + sqq.ZaehleStapel());
             for (int i = 0; i < sqq.ZaehleStapel(); i++)
             {
-                Console.WriteLine("Füge Kategorie " + sqq.zeigeKategorie(StapelIds[i]) + " hinzu");
-                //combo.Items.Add(sqq.zeigeKategorie(i));
-
-                if (!sqq.HatUnter(StapelIds[i]))
+                if (!sqq.hatKarten(StapelIds[i]))
                 {
                     combo.Items.Add(sqq.zeigeKategorie(StapelIds[i]));
                     sqlkram.VerbindungBeenden();
@@ -46,17 +42,39 @@ namespace Karteikarten_APP
 
         private void Button_Click_Add(object sender, RoutedEventArgs e)
         {
-            string kategorie=textboxKategorie.Text;
 
-            bool hatUeber=true;
-            if((string)combo.SelectedItem == "standard")
-            //if (combo.Items.CurrentItem =="standard")
+            if (sqq.nochFrei(Kategorie.Text))
             {
-                hatUeber = false;
+                string kategorie = Kategorie.Text;
+                bool hatUeber=false;
+                int ueberID = 0;
+
+
+                if ((string)combo.SelectedItem ==null)
+                {
+                    hatUeber = false;
+                }
+                else
+                {
+                    hatUeber = true;
+                    ueberID = sqq.HoleStapelIDs((string)combo.SelectedItem)[0];
+                }
+
+                try
+                {
+                    sqq.ErstelleKategorie(kategorie, ueberID, hatUeber);
+                    message_lbl.Content = "Die Kategorie " + Kategorie.Text + " wurde erfolgreich hinzugefügt!";
+                }
+                catch
+                {
+                    message_lbl.Content = "Sorry konnte die Kategorie " + Kategorie.Text + " nicht hinzufügen :(";
+                }
+            }
+            else
+            {
+                message_lbl.Content = "Die Kategorie " + Kategorie.Text + " ist schon vorhanden";
             }
 
-
-            sqq.ErstelleKategorie(kategorie,3,false, hatUeber);
         }
 
         private void Button_Click_Close(object sender, RoutedEventArgs e)
@@ -64,9 +82,5 @@ namespace Karteikarten_APP
             this.Close();
         }
 
-        private void testbutton_Click(object sender, RoutedEventArgs e)
-        {
-            testlabel.Content = textboxKategorie.Text;
-        }
     }
 }

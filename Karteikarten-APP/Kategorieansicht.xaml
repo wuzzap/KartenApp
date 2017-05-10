@@ -5,12 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Karteikarten_APP"
         mc:Ignorable="d"
-        Title="Kategorieansicht" Height="550" Width="725">
+        Title="Kategorieansicht" Height="550" Width="925">
     <Grid Name="grid" Margin="0,0,2,10">
         <Button Content="Beenden" HorizontalAlignment="Left" Margin="533,430,0,0" VerticalAlignment="Top" Width="112" Click="Button_Click_Beenden" Height="49" FontSize="20"/>
 
-        <ListBox Name="listBox" HorizontalAlignment="Left" Height="325" Margin="72,50,0,0" VerticalAlignment="Top" Width="573"/>
-        <Button Content="Neue Kategorie" HorizontalAlignment="Left" Margin="72,400,0,0" VerticalAlignment="Top" Width="113" RenderTransformOrigin="-0.533,0.227" Click="Button_Click_NeueKategorie"/>
+        <ListBox Name="KategorieBox" HorizontalAlignment="Left" Height="325" Margin="45,80,0,0" VerticalAlignment="Top" Width="655"/>
+
+        <ListBox Name="FragenBox" HorizontalAlignment="Left" Height="325" Margin="720,80,0,0" VerticalAlignment="Top" Width="80"/>
+
+        <Button Content="Neue Kategorie" HorizontalAlignment="Left" Margin="45,430,0,0" VerticalAlignment="Top" Width="113" RenderTransformOrigin="-0.533,0.227" Click="Button_Click_NeueKategorie"/>
+        <Button Content="Neue Karte" HorizontalAlignment="Left" Margin="225,430,0,0" VerticalAlignment="Top" Width="110" Click="Button_Click_NeueKarte"/>
 
     </Grid>
 </Window>

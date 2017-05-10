@@ -5,13 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Karteikarten_APP"
         mc:Ignorable="d"
-        Title="Kartenansicht" Height="300" Width="300">
+        Title="Kartenansicht" Height="600" Width="600">
     <Grid>
-        <Button Name="Schließen" Content="Schließen" HorizontalAlignment="Left" Margin="194,210,0,0" VerticalAlignment="Top" Width="75" Click="Schließen_Click"/>
-        <Label Content="ggg" Name="erg" HorizontalAlignment="Left" Height="56" Margin="59,65,0,0" VerticalAlignment="Top" Width="156"/>
-        <Button Content="ZeigeAntwort" HorizontalAlignment="Left" Height="25" Margin="110,176,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_Zeige_Antwort"/>
-        <Button Content="Zurück" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="17,142,0,0" Click="Button_Click_Zurück"/>
-        <Button Content="Vor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="183,142,0,0" Click="Button_Click_Vor"/>
+        <Button Name="Schließen" Content="Schließen" HorizontalAlignment="Left" Margin="207,238,0,0" VerticalAlignment="Top" Width="75" Click="Schließen_Click" RenderTransformOrigin="0.48,1.591"/>
+        <Label Content="ggg" Name="erg" HorizontalAlignment="Left" Height="65" Margin="49,20,0,0" VerticalAlignment="Top" Width="211"/>
+        <Button Content="ZeigeAntwort" HorizontalAlignment="Left" Height="25" Margin="107,195,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_Zeige_Antwort" RenderTransformOrigin="0.036,0.6"/>
+        <Button Content="Zurück" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,195,0,0" Click="Button_Click_Zurück"/>
+        <Button Content="Vor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="207,195,0,0" Click="Button_Click_Vor"/>
+        
+        <Button Content="Richtig: " HorizontalAlignment="Left" Margin="10,126,0,0" VerticalAlignment="Top" Height="26"/>
+        <Label Name=" richtiglbl" Content="xxx" HorizontalAlignment="Left" Margin="67,126,0,0" VerticalAlignment="Top"/>
+        <Button Content="Falsch" HorizontalAlignment="Left" Margin="107,126,0,0" VerticalAlignment="Top" Height="26"/>
+        <Label Name="falschlbl" Content="xxx" HorizontalAlignment="Left" Margin="154,126,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.132,0"/>
 
     </Grid>
 </Window>

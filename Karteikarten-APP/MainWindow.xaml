@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Karteikarten_APP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="725">
+        Title="MainWindow" Height="400" Width="325">
     <Grid Name="grid">
-        <Button Content="Beenden" HorizontalAlignment="Left" Margin="232,390,0,0" VerticalAlignment="Top" Width="257" Height="65" FontSize="20" Click="Button_Click_Beenden" />
-        <Label Content="Karteikarten - App" Margin="183,51,228,417" Height="52" FontSize="30" HorizontalAlignment="Center" Width="306" />
+        <Button Content="Beenden" HorizontalAlignment="Left" Margin="85,280,0,0" VerticalAlignment="Top" Width="180" Height="45" FontSize="15" Click="Button_Click_Beenden" />
+        <Label Content="Karteikarten - App" Margin="10,45,1,273" Height="52" FontSize="30" HorizontalAlignment="Center" Width="306" />
 
 
-        <Button Content="DBInfo" HorizontalAlignment="Left" Margin="232,260,0,0" VerticalAlignment="Top" Width="257" Height="65" FontSize="20" Click="Button_Click_DBInfo"/>
-        <Button Content="Start" HorizontalAlignment="Left" Margin="232,135,0,0" VerticalAlignment="Top" Width="257" Height="65" FontSize="20" Click="Button_Click_Start" RenderTransformOrigin="0.577,-2.692"/>
+        <Button Content="DBInfo" HorizontalAlignment="Left" Margin="85,205,0,0" VerticalAlignment="Top" Width="180" Height="45" FontSize="15" Click="Button_Click_DBInfo"/>
+        <Button Content="Start" HorizontalAlignment="Left" Margin="85,135,0,0" VerticalAlignment="Top" Width="180" Height="45" FontSize="15" Click="Button_Click_Start" RenderTransformOrigin="0.577,-2.692"/>
 
     </Grid>
 </Window>

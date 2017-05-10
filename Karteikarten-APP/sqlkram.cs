@@ -23,6 +23,25 @@ namespace Karteikarten_APP
             m_dbConnection.Close();
         }
 
+        public void neueKarte(string frage, string antwort, int StapelID,string Kategorie)
+        {
+            VerbindungAufbauen();
+            string erg = "";
+            string sql = "INSERT INTO Karten(Frage,Antwort,StapelID,Kategorie) VALUES('"+frage+"','"+antwort+"','"+StapelID+ "','" + Kategorie + "')";
+            string sql2= "UPDATE Kategorien set hatKarten = 'true' WHERE StapelID=="+StapelID;
+
+
+
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteCommand command2 = new SQLiteCommand(sql2, m_dbConnection);
+            //SQLiteDataReader reader = command.ExecuteReader();
+            command.ExecuteNonQuery();
+            command2.ExecuteNonQuery();
+            //command.ExecuteReader();
+            VerbindungBeenden();
+        }
+
+
         public int ZaehleStapel()
         {
             VerbindungAufbauen();
@@ -47,13 +66,13 @@ namespace Karteikarten_APP
             string sql = "select StapelID from Kategorien where UeberID=="+StapelID;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
-            Console.WriteLine("Zaehle Stapel begonnen");
+            
             while (reader.Read())
             {
                 max += 1;
-                Console.WriteLine("Zaehle Stapel "+max+"mal durchgelaufen");
+                
             }
-            Console.WriteLine("Zaehle Stapel hat nichts gefunden");
+            
             VerbindungBeenden();
             return max;
         }
@@ -109,7 +128,7 @@ namespace Karteikarten_APP
             {
 
                 var temp = Convert.ChangeType(reader["KartenID"], typeof(int)) as int?;
-                max = (int)temp;
+                max += 1;
 
             }
             VerbindungBeenden();
@@ -157,6 +176,84 @@ namespace Karteikarten_APP
             }
             VerbindungBeenden();
             return erg;
+        }
+
+        public Boolean hatKarten(int StapelID)
+        {
+            bool temp = false;
+            VerbindungAufbauen();
+            string erg = "";
+            string sql = "select hatKarten from Kategorien where StapelID==" + StapelID;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                temp = (bool)reader["hatKarten"];
+
+            }
+            VerbindungBeenden();
+            return temp;
+        }
+
+        public Boolean hatKarten(string Kategorie)
+        {
+            bool temp = false;
+            VerbindungAufbauen();
+            string erg = "";
+            string sql = "select hatKarten from Kategorien where Kategorie=="+"'"+Kategorie+"'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+
+            try
+            {
+                SQLiteDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    temp = (bool)reader["hatKarten"];
+
+                }
+                VerbindungBeenden();
+                return temp;
+            }
+            catch
+            {
+                temp = false;
+            }
+            return temp;
+        }
+
+        public Boolean nochFrei(string kategorie)
+        {
+            bool temp = true;
+            VerbindungAufbauen();
+            string erg = "";
+
+            try
+            {
+                string sql = "select Kategorie from Kategorien where Kategorie=="+"'"+kategorie+"'";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string str = (string)reader["Kategorie"];
+                    if(str.Equals(kategorie))
+                    {
+                        temp = false;
+                    }
+                    temp = false;
+                }
+                VerbindungBeenden();
+
+            }
+            catch
+            {
+               
+            }
+
+
+                return temp;
         }
 
         public Boolean hatUeber(int StapelID)
@@ -229,11 +326,11 @@ namespace Karteikarten_APP
             return erg;
         }
 
-        public void ErstelleKategorie(string Kategorie,int UeberID,bool HatUnter, bool HatUeber)
+        public void ErstelleKategorie(string Kategorie,int UeberID,bool HatUeber)
         {
             VerbindungAufbauen();
             string erg = "";
-            string sql = "INSERT INTO Kategorien(Kategorie,UeberID, HatUnter,HatUeber) VALUES('"+Kategorie+"','"+UeberID+"', '"+HatUnter+"', '"+HatUeber+"')";
+            string sql = "INSERT INTO Kategorien(Kategorie,UeberID, HatUeber) VALUES('"+Kategorie+"','"+UeberID+"', '"+HatUeber+"')";
                       
 
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
@@ -245,7 +342,6 @@ namespace Karteikarten_APP
 
         public List<int> HoleAlleStapelIDs()
         {
-            VerbindungAufbauen();
             List<int> stapelIds = new List<int>();
             
             VerbindungAufbauen();
@@ -263,10 +359,66 @@ namespace Karteikarten_APP
 
             }
             VerbindungBeenden();
-
-
-
             return stapelIds;
+        }
+
+        public List<int> HoleStapelIDs(int StapelID)
+        {
+
+            VerbindungAufbauen();
+            List<int> stapelIds = new List<int>();
+            int max = 0;
+            string sql = "select StapelID from Kategorien where UeberID==" + StapelID;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var temp = Convert.ChangeType(reader["StapelID"], typeof(int)) as int?;
+                stapelIds.Add((int)temp);
+            }
+
+            VerbindungBeenden();
+            return stapelIds;
+        }
+
+        public List<int> HoleStapelIDs(string kategorie)
+        {
+
+            VerbindungAufbauen();
+            List<int> stapelIds = new List<int>();
+            int max = 0;
+            string sql = "select StapelID from Kategorien where Kategorie=="+"'"+kategorie+"'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var temp = Convert.ChangeType(reader["StapelID"], typeof(int)) as int?;
+                stapelIds.Add((int)temp);
+            }
+
+            VerbindungBeenden();
+            return stapelIds;
+        }
+
+        public int HoleStapelID(string kategorie)
+        {
+
+            VerbindungAufbauen();
+            int stapelId=0;
+            string sql = "select StapelID from Kategorien where Kategorie==" + "'" + kategorie + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var temp = Convert.ChangeType(reader["StapelID"], typeof(int)) as int?;
+                stapelId=(int)temp;
+            }
+
+            VerbindungBeenden();
+            return stapelId;
         }
 
     }

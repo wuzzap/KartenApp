@@ -78,6 +78,9 @@
     <Compile Include="Kategorieansicht.xaml.cs">
       <DependentUpon>Kategorieansicht.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NeueKarte.xaml.cs">
+      <DependentUpon>NeueKarte.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NeueKategorie.xaml.cs">
       <DependentUpon>NeueKategorie.xaml</DependentUpon>
     </Compile>
@@ -111,6 +114,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NeueKarte.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NeueKategorie.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

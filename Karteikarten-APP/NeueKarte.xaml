@@ -1,0 +1,21 @@
+﻿<Window x:Class="Karteikarten_APP.NeueKarte"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Karteikarten_APP"
+        mc:Ignorable="d"
+        Title="NeueKarte" Height="650" Width="400">
+    <Grid Margin="0,0,2,-1">
+        <TextBox Name="FrageBox" HorizontalAlignment="Left" Height="95" Margin="125,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195"/>
+        <TextBox Name="AntwortBox" HorizontalAlignment="Left" Height="95" Margin="125,140,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195"/>
+        <Button Content="Add" HorizontalAlignment="Left" Margin="55,328,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Add"/>
+        <ComboBox Name="KategorieCombo" HorizontalAlignment="Left" Margin="125,250,0,0" VerticalAlignment="Top" Width="195"/>
+        <Label Content="Frage" HorizontalAlignment="Left" Margin="55,70,0,0" VerticalAlignment="Top"/>
+        <Label Content="Antwort" HorizontalAlignment="Left" Margin="55,194,0,0" VerticalAlignment="Top"/>
+        <Button Content="Close" HorizontalAlignment="Left" Margin="245,328,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Close"/>
+        <Label Content="Kategorie" HorizontalAlignment="Left" Margin="56,246,0,0" VerticalAlignment="Top" Width="64"/>
+        <TextBlock Name="msg" HorizontalAlignment="Left" Margin="125,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="195"/>
+
+    </Grid>
+</Window>
