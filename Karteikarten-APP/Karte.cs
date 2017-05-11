@@ -12,6 +12,9 @@ namespace Karteikarten_APP
        public int kartenID;
        public string frage;
        public string antwort;
+       public int correct;
+       public int wrong;
+        public int priority;
 
        /* private string bla;
 
@@ -27,11 +30,14 @@ namespace Karteikarten_APP
 
         }
 
-        public Karte(int kartenID, string frage, string antwort)
+        public Karte(int kartenID, string frage, string antwort, int correct, int wrong, int priority)
         {
             this.kartenID = kartenID;
             this.frage = frage;
             this.antwort = antwort;
+            this.correct = correct;
+            this.wrong = wrong;
+            this.priority = priority;
         }
     }
 }

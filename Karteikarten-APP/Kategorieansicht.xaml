@@ -7,14 +7,17 @@
         mc:Ignorable="d"
         Title="Kategorieansicht" Height="550" Width="925">
     <Grid Name="grid" Margin="0,0,2,10">
-        <Button Content="Beenden" HorizontalAlignment="Left" Margin="533,430,0,0" VerticalAlignment="Top" Width="112" Click="Button_Click_Beenden" Height="49" FontSize="20"/>
+        <Button Content="Beenden" HorizontalAlignment="Left" Margin="720,460,0,0" VerticalAlignment="Top" Width="90" Click="Button_Click_Beenden" Height="29" FontSize="15"/>
 
-        <ListBox Name="KategorieBox" HorizontalAlignment="Left" Height="325" Margin="45,80,0,0" VerticalAlignment="Top" Width="655"/>
+        <ListBox Name="KategorieBox" HorizontalAlignment="Left" Height="325" Margin="45,80,0,0" VerticalAlignment="Top" Width="505"/>
 
-        <ListBox Name="FragenBox" HorizontalAlignment="Left" Height="325" Margin="720,80,0,0" VerticalAlignment="Top" Width="80"/>
+        <ListBox Name="AlleFragenBox" HorizontalAlignment="Left" Height="325" Margin="555,80,0,0" VerticalAlignment="Top" Width="80"/>
 
         <Button Content="Neue Kategorie" HorizontalAlignment="Left" Margin="45,430,0,0" VerticalAlignment="Top" Width="113" RenderTransformOrigin="-0.533,0.227" Click="Button_Click_NeueKategorie"/>
         <Button Content="Neue Karte" HorizontalAlignment="Left" Margin="225,430,0,0" VerticalAlignment="Top" Width="110" Click="Button_Click_NeueKarte"/>
-
+        <Label Content="Kategorie" HorizontalAlignment="Left" Margin="195,29,0,0" VerticalAlignment="Top" Width="305" Height="46" FontSize="25"/>
+        <Label Content="Alle" HorizontalAlignment="Left" Margin="555,29,0,0" VerticalAlignment="Top" Height="57" Width="80" FontSize="25"/>
+        <Label Content="Offen" HorizontalAlignment="Left" Margin="635,29,0,0" VerticalAlignment="Top" Height="57" Width="80" FontSize="25"/>
+        <ListBox Name="OffeneFragenBox" HorizontalAlignment="Left" Height="325" Margin="640,80,0,0" VerticalAlignment="Top" Width="80"/>
     </Grid>
 </Window>

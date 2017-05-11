@@ -24,20 +24,28 @@ namespace Karteikarten_APP
         public NeueKategorie()
         {
             InitializeComponent();
+
+            updateView();
+
+
+
+
+        }
+
+        private void updateView()
+        {
             List<int> StapelIds = new List<int>(sqq.HoleAlleStapelIDs());
             ComboBoxItem cbi = new ComboBoxItem();
-
             sqlkram.VerbindungAufbauen();
             for (int i = 0; i < sqq.ZaehleStapel(); i++)
             {
                 if (!sqq.hatKarten(StapelIds[i]))
                 {
                     combo.Items.Add(sqq.zeigeKategorie(StapelIds[i]));
-                    sqlkram.VerbindungBeenden();
+
                 }
             }
-
-
+            sqlkram.VerbindungBeenden();
         }
 
         private void Button_Click_Add(object sender, RoutedEventArgs e)
@@ -75,6 +83,7 @@ namespace Karteikarten_APP
                 message_lbl.Content = "Die Kategorie " + Kategorie.Text + " ist schon vorhanden";
             }
 
+            updateView();
         }
 
         private void Button_Click_Close(object sender, RoutedEventArgs e)

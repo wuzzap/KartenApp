@@ -24,8 +24,11 @@ namespace Karteikarten_APP
         public DbInfo()
         {
             InitializeComponent();
-            anzKarten.Content = "Es gibt "+sqq.ZaehleKarten()+" Karten";
-            anzStapel.Content="Es gibt "+sqq.ZaehleStapel() + " Stapel";
+            //anzKarten.Content = "Es gibt "+sqq.ZaehleKarten()+" Karten";
+            //anzStapel.Content="Es gibt "+sqq.ZaehleStapel() + " Stapel";
+
+            anzKarten.Content = "Es gibt " + sqq.count("KartenID","Karten") + " Karten";
+            anzStapel.Content = "Es gibt " + sqq.count("StapelID", "Kategorien") + " Stapel";
         }
 
         private void Button_Click_Close(object sender, RoutedEventArgs e)
