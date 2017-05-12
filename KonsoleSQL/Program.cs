@@ -19,10 +19,24 @@ namespace KonsoleSQL
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            VerbindungAufbauen();
+            System.DateTime jetzt = System.DateTime.Now;
+            Console.WriteLine(jetzt.Ticks);
+            Console.WriteLine(jetzt);
+
+            long x = jetzt.Ticks;
+            DateTime eben = new DateTime();
+          //  eben.Ticks = x;
+
+
+            DateTime eben2 = DateTime.Now;
+            eben2.AddTicks(x);
+
+            Console.WriteLine(x);
+
+            // VerbindungAufbauen();
             // Console.WriteLine(ZeigeFragen());
 
-           // anzStapel = ZaehleStapel();
+            // anzStapel = ZaehleStapel();
             //Console.WriteLine("Es sind " + anzStapel + " Stapel vorhanden");
 
             //Console.WriteLine("Es gibt insgesamt " + ZaehleKarten() + " Karten");
@@ -31,8 +45,8 @@ namespace KonsoleSQL
             //{
             //    Console.WriteLine("Stapel " + i + " enthällt " + ZaehleKarten(i) + " Karten");
             //}
-           // ZeigeFragen(1);
-            VerbindungBeenden();
+            // ZeigeFragen(1);
+            //VerbindungBeenden();
             Console.Read();
         }
         public static SQLiteConnection m_dbConnection;

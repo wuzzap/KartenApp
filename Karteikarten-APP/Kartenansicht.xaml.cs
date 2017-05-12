@@ -27,9 +27,18 @@ namespace Karteikarten_APP
         int index;
 
 
-        public Kartenansicht(int StapelID)
+        public Kartenansicht(int StapelID,int priority = 5, bool justPriority = false)
         {
-            karte = new List<Karte>(sqq.ErstelleKarten(StapelID));
+
+            if (!justPriority)
+            {
+                karte = new List<Karte>(sqq.ErstelleKarten(StapelID));
+            }
+            else
+            {
+                karte = new List<Karte>(sqq.createPriorityCards(StapelID, priority));
+            }
+
             this.index = 0;
             this.DataContext = karte[this.index];
             InitializeComponent();

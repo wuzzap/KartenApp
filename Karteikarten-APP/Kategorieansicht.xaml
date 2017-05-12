@@ -19,5 +19,7 @@
         <Label Content="Alle" HorizontalAlignment="Left" Margin="555,29,0,0" VerticalAlignment="Top" Height="57" Width="80" FontSize="25"/>
         <Label Content="Offen" HorizontalAlignment="Left" Margin="635,29,0,0" VerticalAlignment="Top" Height="57" Width="80" FontSize="25"/>
         <ListBox Name="OffeneFragenBox" HorizontalAlignment="Left" Height="325" Margin="640,80,0,0" VerticalAlignment="Top" Width="80"/>
+        <ListBox Name="ZuletztBox" HorizontalAlignment="Left" Height="325" Margin="730,80,0,0" VerticalAlignment="Top" Width="155"/>
+        <Label Content="Zuletzt" HorizontalAlignment="Left" Margin="746,29,0,0" VerticalAlignment="Top" Width="122" Height="40" FontSize="25"/>
     </Grid>
 </Window>

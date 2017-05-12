@@ -24,12 +24,7 @@ namespace Karteikarten_APP
         public NeueKategorie()
         {
             InitializeComponent();
-
             updateView();
-
-
-
-
         }
 
         private void updateView()
