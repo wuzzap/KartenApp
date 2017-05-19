@@ -44,8 +44,6 @@ namespace Karteikarten_APP
             InitializeComponent();
             showCategories(0);
             fillAutoCombo();
-
-
         }
 
 

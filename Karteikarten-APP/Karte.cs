@@ -17,15 +17,6 @@ namespace Karteikarten_APP
         public int priority;
         public string kategorie;
 
-       /* private string bla;
-
-        public string Bla
-        {
-            get { return "AA" + bla; }
-            set { bla = value; }
-        }*/
-
-
         public Karte()
         {
 

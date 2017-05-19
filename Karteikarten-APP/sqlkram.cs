@@ -45,6 +45,23 @@ namespace Karteikarten_APP
             VerbindungBeenden();
         }
 
+        public void changeTime(int ID, string time = "Time", string category = "Karten")
+        {
+            VerbindungAufbauen();
+            DateTime dt = DateTime.Now;
+            long dtx = dt.Ticks;
+
+            string str = "KartenID";
+            if (category == "Kategorien")
+            {
+                str = "StapelID";
+            }
+            string sql = "UPDATE " + category + " set " + time + " = " + dtx + " WHERE " + str + " == " + ID;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+            VerbindungBeenden();
+        }
+
         public int count(string field="KartenID", string table = "Karten")
         {
             VerbindungAufbauen();
@@ -179,6 +196,46 @@ namespace Karteikarten_APP
             VerbindungBeenden();
 
         }
+        public DateTime get_correctTime(int cardID)
+        {
+            VerbindungAufbauen();
+            List<int> stapelIds = new List<int>();
+            string sql = "select correctTime from Karten where KartenID=" + cardID;
+            DateTime dtx = new DateTime();
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            long dt = 0;
+            while (reader.Read())
+            {
+                var temp = Convert.ChangeType(reader["correctTime"], typeof(long)) as long?;
+                dt = (long)temp;
+            }
+            reader.Close();
+            VerbindungBeenden();
+            dtx = new DateTime(dt);
+            return dtx;
+        }
+
+        public DateTime get_wrongTime(int cardID)
+        {
+            VerbindungAufbauen();
+            List<int> stapelIds = new List<int>();
+            string sql = "select wrongTime from Karten where KartenID=" + cardID;
+            DateTime dtx = new DateTime();
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            long dt = 0;
+            while (reader.Read())
+            {
+                var temp = Convert.ChangeType(reader["wrongTime"], typeof(long)) as long?;
+                dt = (long)temp;
+            }
+            reader.Close();
+            VerbindungBeenden();
+            dtx = new DateTime(dt);
+            return dtx;
+        }
+
 
 
 

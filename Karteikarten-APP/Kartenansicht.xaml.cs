@@ -26,6 +26,7 @@ namespace Karteikarten_APP
         bool changeCorrect = false;
         bool changeWrong = false;
         bool changeCorrectTime = false;
+        bool changeWrongTime = false;
         int index;
         DispatcherTimer _timer;
         TimeSpan _time;
@@ -73,6 +74,17 @@ namespace Karteikarten_APP
 
         private void updateView(int index)
         {
+
+            //bei karte anheften
+          //  long dt = sqq.getLong("select correctTime from Karten where KartenID==" + karte[index].kartenID, "correctTime");
+            //DateTime dtx = new DateTime(dt);
+            DateTime dtx = sqq.get_correctTime(karte[index].kartenID);
+            Zuletztrichtig.Content = "Zuletzt : " + dtx;
+
+            DateTime dtx2 = sqq.get_wrongTime(karte[index].kartenID);
+            Zuletztfalsch.Content = "Zuletzt : " + dtx2;
+
+            _time = TimeSpan.Zero;
             erg.Content = karte[index].frage;
             richtiglbl.Content = karte[index].correct;
             falschlbl.Content = karte[index].wrong;
@@ -80,11 +92,7 @@ namespace Karteikarten_APP
             erg.Content = karte[index].frage;
             Zaehler.Content = ((index+1) + " / " + karte.Count);
             Kategorie.Content = karte[index].kategorie;
-
-            long dt = sqq.getLong("select correctTime from Karten where KartenID==" + karte[index].kartenID, "correctTime");
-            DateTime dtx = new DateTime(dt);
-            Zuletztrichtig.Content = "Zuletzt : "+dtx;
-            _time = TimeSpan.Zero;
+            
         }
 
         private void updateDB(int index)
@@ -92,11 +100,14 @@ namespace Karteikarten_APP
             if (changePriority) sqq.changeIntVars("Prioritaet", karte[index].priority, karte[index].kartenID);
             if (changeCorrect) sqq.changeIntVars("Korrekt", karte[index].correct, karte[index].kartenID);
             if (changeWrong)  sqq.changeIntVars("Falsch", karte[index].wrong, karte[index].kartenID);
-            if (changeCorrectTime) sqq.changeTime(karte[index].kartenID);
+            if (changeCorrectTime) sqq.changeTime(karte[index].kartenID,"CorrectTime","Karten");
+            if (changeWrongTime) sqq.changeTime(karte[index].correct, "wrongTime", "Karten");
             changeWrong = false;
             changeCorrect = false;
             changePriority = false;
             changeCorrectTime = false;
+            changeWrongTime = false;
+            // changeWrongTime = false;
         }
 
 
@@ -158,6 +169,7 @@ namespace Karteikarten_APP
             karte[index].priority += 1;
             changeWrong = true;
             changePriority = true;
+            changeWrongTime = true;
             updateView(index);
         }
 
@@ -181,6 +193,8 @@ namespace Karteikarten_APP
             karte[index].wrong = 0;
             changeWrong = true;
             changeCorrect = true;
+            changeCorrectTime = true;
+            changeWrongTime = true;
             updateView(index);
         }
 
