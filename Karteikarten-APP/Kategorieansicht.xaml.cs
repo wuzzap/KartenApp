@@ -11,6 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System;
+using System.Windows;
+using System.Windows.Threading;
+
 
 namespace Karteikarten_APP
 {
@@ -28,6 +32,9 @@ namespace Karteikarten_APP
     
     public partial class Kategorieansicht : Window
     {
+
+        int index;
+        DateTime dt = new DateTime();
         public static sqlkram sqq = new sqlkram();
         // public static int StapelID;
         private bool firstRun = true;
@@ -36,28 +43,36 @@ namespace Karteikarten_APP
         {
             InitializeComponent();
             showCategories(0);
+            fillAutoCombo();
+
+
         }
 
-        public void showPrioQuestions(int i)
+
+
+        private void openStack(int i)
         {
 
+            sqq.changeTime(i, "Kategorien");
+            showCategories(i);
         }
 
-       
+        private void openStack(int i,bool firstRun)
+        {
+
+            sqq.changeTime(i, "Kategorien");
+            showCategories(i,firstRun);
+        }
 
         private void oeffneStapel(object sender, RoutedEventArgs e)
         {
             int i = ((MyButton)sender).field;
-
-            DateTime dt = DateTime.Now;
-            long dtx = dt.Ticks;
-            sqq.changeTime(i,dtx,"Kategorie");
-                showCategories(i);
+            openStack(i,firstRun=false);
         }
         private void oeffnePrioStapel(object sender, RoutedEventArgs e)
         {
             int i = ((MyButton)sender).field;
-            showCategories(i,5,true);
+            showCategories(i,false,5,true);
         }
 
         private void Button_Click_Beenden(object sender, RoutedEventArgs e)
@@ -65,10 +80,18 @@ namespace Karteikarten_APP
             this.Close();
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            openStack(this.index);
+        }
+
         private void Button_Click_NeueKategorie(object sender, RoutedEventArgs e)
         {
             var wnd = new NeueKategorie();
-            wnd.Show();
+            wnd.Closed += Window_Closed;
+            wnd.ShowDialog();
+           
+
         }
 
         private void Button_Click_NeueKarte(object sender, RoutedEventArgs e)
@@ -77,9 +100,12 @@ namespace Karteikarten_APP
             wnd.Show();
         }
         
-        private void showCategories(int i, int priority = 5, bool justPriority=false)
+        private void showCategories(int i,bool firstRun=true, int priority = 5, bool justPriority=false)
         {
-            if (!sqq.HatUnter(i) && firstRun == false)
+            this.index = i;
+            bool hatUnter = sqq.HatUnter(i);
+
+            if (!hatUnter && firstRun == false)
             {
                 if (sqq.hatKarten(i))
                 {
@@ -90,30 +116,40 @@ namespace Karteikarten_APP
                     }
                     else
                     {
-                        var wnd = new Kartenansicht(i,priority,justPriority);
+                        var wnd = new Kartenansicht(i,"", priority, justPriority);
                         wnd.Show();
                     }
                 }
                 else
                 {
-                    //hmmmmmmm
+                    showCategories(i,true);
                 }
             }
             else
             {
+               /* if (firstRun)
+                {
+                    i = 0;
+                }*/
                 firstRun = false;
                 //List<int> Ids = new List<int>(sqq.HoleStapelIDs(i));
                 List<int> StapelIds = new List<int>(sqq.getIntVarList(("select StapelID from Kategorien where UeberID==" + i), "StapelId"));
                 KategorieBox.Items.Clear();
                 AlleFragenBox.Items.Clear();
+                OffeneFragenBox.Items.Clear();
+                ZuletztBox.Items.Clear();
                 InitializeComponent();
 
                 for (int x = 0; x < StapelIds.Count(); x++)
                 {
+                    int UeberID = sqq.getInt("select UeberId from Kategorien where StapelId==" + x + "","UeberId");
 
-                    if (!sqq.hatUeber(x + 1))
-                    {
-                        MyButton KategorieButton = new MyButton(x + 1);
+
+                    //if (!sqq.hatUeber(StapelIds[x]))
+
+                   // if (UeberID==i)
+                    //{
+                        MyButton KategorieButton = new MyButton(StapelIds[x]);
 
                         KategorieButton.Width = KategorieBox.Width - 15;
                         KategorieButton.Height = 40;
@@ -121,35 +157,49 @@ namespace Karteikarten_APP
                         KategorieButton.Content = (x + 1) + " : " + sqq.zeigeKategorie(StapelIds[x]);
                         KategorieButton.Visibility = Visibility.Visible;
 
-                        MyButton AlleFragenButton = new MyButton(x + 1);
+                        MyButton AlleFragenButton = new MyButton((StapelIds[x]));
 
                         AlleFragenButton.Width = AlleFragenBox.Width - 25;
                         AlleFragenButton.Height = 40;
                         AlleFragenButton.Name = "Fra" + x;
+                    //AlleFragenButton.Content = sqq.ZaehleKarten(StapelIds[x]);
+                       // AlleFragenButton.Content = sqq.count("KartenID", "Karten","StapelID=="+ StapelIds[x]);
+                       if (sqq.HatUnter(StapelIds[x]))
+                    {
+                        AlleFragenButton.Content = sqq.countAllCards((StapelIds[x]));
+                    }
+                    else
+                    {
+                        AlleFragenButton.Content = sqq.count("KartenID", "Karten", "StapelID==" + StapelIds[x]);
+                    }
+                    AlleFragenButton.Visibility = Visibility.Visible;
 
-                        //AlleFragenButton.Content = sqq.ZaehleKarten(StapelIds[x]);
-                        AlleFragenButton.Content = sqq.count("KartenID", "Karten","StapelID=="+ StapelIds[x]);
-                        AlleFragenButton.Visibility = Visibility.Visible;
-
-                        MyButton OffeneFragenButton = new MyButton(x + 1);
+                    MyButton OffeneFragenButton = new MyButton((StapelIds[x]));
 
                         OffeneFragenButton.Width = OffeneFragenBox.Width - 25;
                         OffeneFragenButton.Height = 40;
                         OffeneFragenButton.Name = "Frag" + x;
-                        //OffeneFragenButton.Content = sqq.ZaehleKarten(StapelIds[x]);
-                        OffeneFragenButton.Content = sqq.count("KartenID","Karten"," Prioritaet>5 AND StapelID=="+StapelIds[x]);
+                    //OffeneFragenButton.Content = sqq.ZaehleKarten(StapelIds[x]);
+                    int openQuestions= sqq.count("KartenID", "Karten", " Prioritaet>5 AND StapelID==" + StapelIds[x]);
+                    OffeneFragenButton.Content = openQuestions;
+                    if (openQuestions > 0)
+                    {
                         OffeneFragenButton.Visibility = Visibility.Visible;
-
+                    }
+                    else
+                    {
+                        OffeneFragenButton.Visibility = Visibility.Hidden;
+                    }
                         Label lastTry = new Label();
 
-                        lastTry.Width = OffeneFragenBox.Width - 25;
+                        lastTry.Width = ZuletztBox.Width-25;
                         lastTry.Height = 40;
                         lastTry.Name = "lastTry" + x;
                         //OffeneFragenButton.Content = sqq.ZaehleKarten(StapelIds[x]);
-                         long dt= sqq.getLong("select time from Kategorien where StapelID==" + StapelIds[x],"Time");
-                        DateTime dtx = new DateTime();
-                        dtx.AddTicks(dt);
-                        //lastTry.Content = dtx.;
+                        long dt= sqq.getLong("select time from Kategorien where StapelID==" + StapelIds[x],"Time");
+                        DateTime dtx = new DateTime(dt);
+                        //dtx.AddTicks(dt);
+                        lastTry.Content = dtx;
                         lastTry.Visibility = Visibility.Visible;
 
 
@@ -163,10 +213,49 @@ namespace Karteikarten_APP
                         AlleFragenButton.Click += oeffneStapel;
 
                         OffeneFragenButton.Click += oeffnePrioStapel;
-                    }
+                  //  }
                     sqlkram.VerbindungBeenden();
                 }
             }
         }
+
+        private void fillAutoCombo()
+        {
+            autoCombo.Items.Add("Random");
+            autoCombo.Items.Add("RandomPrio");
+            autoCombo.Items.Add("Meiste Fehler");
+        }
+
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            openStack(0);
+        }
+
+        private void autoStack_ClickBtn(object sender, RoutedEventArgs e)
+        {
+            autoStack();
+        }
+
+        public void showPrioQuestions(int i)
+        {
+
+        }
+
+        private void autoStack()
+        {
+            int anz = Convert.ToInt32(anzAuto.Text);
+            switch (autoCombo.Text)
+            {
+                case "Random":
+                    var wnd = new Kartenansicht(anz,autoCombo.Text,5,false);
+                    wnd.Show(); break;
+
+                case "RandomPrio": wnd=new Kartenansicht(anz, autoCombo.Text, 5, false); wnd.Show(); break;
+                case "Meiste Fehler": break;
+            }
+        }
+
+
+
     }
 }

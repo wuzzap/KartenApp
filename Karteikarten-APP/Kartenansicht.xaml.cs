@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Karteikarten_APP
 {
@@ -24,25 +25,48 @@ namespace Karteikarten_APP
         bool changePriority = false;
         bool changeCorrect = false;
         bool changeWrong = false;
+        bool changeCorrectTime = false;
         int index;
+        DispatcherTimer _timer;
+        TimeSpan _time;
 
-
-        public Kartenansicht(int StapelID,int priority = 5, bool justPriority = false)
+        public Kartenansicht(int StapelID,string mode="", int priority = 5, bool justPriority = false)
         {
+            switch (mode)
+            {
+                case "":
+                    if (!justPriority)
+                    {
+                        karte = new List<Karte>(sqq.ErstelleKarten(StapelID));
+                    }
+                    else
+                    {
+                        karte = new List<Karte>(sqq.createPriorityCards(StapelID, priority));
 
-            if (!justPriority)
-            {
-                karte = new List<Karte>(sqq.ErstelleKarten(StapelID));
+                    }
+                    break;
+
+                case "Random": karte = new List<Karte>(sqq.createRandomCards(StapelID)); break;    // StapelID ist in diesem Falle die Anzahl der Fragen
+                case "RandomPrio": karte = new List<Karte>(sqq.createRandomPrioCards(StapelID)); break;      // StapelID ist in diesem Falle die Anzahl der Fragen
             }
-            else
-            {
-                karte = new List<Karte>(sqq.createPriorityCards(StapelID, priority));
-            }
+
 
             this.index = 0;
             this.DataContext = karte[this.index];
             InitializeComponent();
             updateView(index);
+
+            InitializeComponent();
+
+            _time = TimeSpan.Zero;
+
+            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+            {
+                timer.Content = _time.ToString("c");
+                _time = _time.Add(TimeSpan.FromSeconds(+1));
+            }, Application.Current.Dispatcher);
+
+            _timer.Start();
 
 
         }
@@ -54,6 +78,13 @@ namespace Karteikarten_APP
             falschlbl.Content = karte[index].wrong;
             PrioLbL.Content = karte[index].priority;
             erg.Content = karte[index].frage;
+            Zaehler.Content = ((index+1) + " / " + karte.Count);
+            Kategorie.Content = karte[index].kategorie;
+
+            long dt = sqq.getLong("select correctTime from Karten where KartenID==" + karte[index].kartenID, "correctTime");
+            DateTime dtx = new DateTime(dt);
+            Zuletztrichtig.Content = "Zuletzt : "+dtx;
+            _time = TimeSpan.Zero;
         }
 
         private void updateDB(int index)
@@ -61,10 +92,11 @@ namespace Karteikarten_APP
             if (changePriority) sqq.changeIntVars("Prioritaet", karte[index].priority, karte[index].kartenID);
             if (changeCorrect) sqq.changeIntVars("Korrekt", karte[index].correct, karte[index].kartenID);
             if (changeWrong)  sqq.changeIntVars("Falsch", karte[index].wrong, karte[index].kartenID);
-         
+            if (changeCorrectTime) sqq.changeTime(karte[index].kartenID);
             changeWrong = false;
             changeCorrect = false;
             changePriority = false;
+            changeCorrectTime = false;
         }
 
 
@@ -108,7 +140,6 @@ namespace Karteikarten_APP
                 index = 0;
             }
             updateView(index);
- 
         }
 
         private void Button_Click_Richtig(object sender, RoutedEventArgs e)
@@ -117,6 +148,7 @@ namespace Karteikarten_APP
             karte[index].priority -= 1;
             changeCorrect = true;
             changePriority = true;
+            changeCorrectTime = true;
             updateView(index);
         }
 
@@ -127,7 +159,6 @@ namespace Karteikarten_APP
             changeWrong = true;
             changePriority = true;
             updateView(index);
-
         }
 
         private void ReducePriority_Click(object sender, RoutedEventArgs e)

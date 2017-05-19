@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="NeueKarte" Height="650" Width="400">
     <Grid Margin="0,0,2,-1">
-        <TextBox Name="FrageBox" HorizontalAlignment="Left" Height="95" Margin="125,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195"/>
-        <TextBox Name="AntwortBox" HorizontalAlignment="Left" Height="95" Margin="125,140,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195"/>
+        <TextBox Name="FrageBox" HorizontalAlignment="Left" Height="95" Margin="125,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195" AcceptsReturn="True"/>
+        <TextBox Name="AntwortBox" HorizontalAlignment="Left" Height="95" Margin="125,140,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195" AcceptsReturn="True"/>
         <Button Content="Add" HorizontalAlignment="Left" Margin="55,328,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Add"/>
         <ComboBox Name="KategorieCombo" HorizontalAlignment="Left" Margin="125,250,0,0" VerticalAlignment="Top" Width="195"/>
         <Label Content="Frage" HorizontalAlignment="Left" Margin="55,70,0,0" VerticalAlignment="Top"/>

@@ -28,30 +28,36 @@ namespace Karteikarten_APP
             List<int> StapelIds = new List<int>(sqq.HoleAlleStapelIDs());
             ComboBoxItem cbi = new ComboBoxItem();
 
-            sqlkram.VerbindungAufbauen();
+           // sqlkram.VerbindungAufbauen(); // CHANGED 
             for (int i = 0; i < sqq.ZaehleStapel(); i++)
             {
                 if (!sqq.HatUnter(StapelIds[i]))
                 {
                     KategorieCombo.Items.Add(sqq.zeigeKategorie(StapelIds[i]));
 
-                    sqlkram.VerbindungBeenden();
                 }
             }
+        //    sqlkram.VerbindungBeenden();
         }
 
         private void Button_Click_Add(object sender, RoutedEventArgs e)
         {
             int StapelID=sqq.HoleStapelID((string)KategorieCombo.SelectedItem);
-
-            try
+            if (!sqq.HatUnter(StapelID))
             {
-                sqq.neueKarte(FrageBox.Text, AntwortBox.Text, StapelID, (string)KategorieCombo.SelectedItem);
-                msg.Text = "Karte wurde erfolgreich hinzugefügt";
+                try
+                {
+                    sqq.neueKarte(FrageBox.Text, AntwortBox.Text, StapelID, (string)KategorieCombo.SelectedItem);
+                    msg.Text = "Karte wurde erfolgreich hinzugefügt";
+                }
+                catch
+                {
+                    msg.Text = "Sorry es ist ein Fehler aufgetreten";
+                }
             }
-            catch
+            else
             {
-                msg.Text = "Sorry es ist ein Fehler aufgetreten";
+                msg.Text = "Der ausgewählte Stapel besitzt weitere Stapel, Karte konnte nicht hinzugefügt werden";
             }
         }
 

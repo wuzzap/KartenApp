@@ -50,22 +50,30 @@ namespace Karteikarten_APP
             {
                 string kategorie = Kategorie.Text;
                 bool hatUeber=false;
+                bool hatUnter = false;
+                
                 int ueberID = 0;
 
 
                 if ((string)combo.SelectedItem ==null)
                 {
-                    hatUeber = false;
+                    hatUeber = false;       // neuer stapel
                 }
                 else
                 {
-                    hatUeber = true;
+                    hatUnter = true;        // mutterstapel
+                    hatUeber = true;        // neuer stapel
                     ueberID = sqq.HoleStapelIDs((string)combo.SelectedItem)[0];
                 }
 
                 try
                 {
+
+                    if (hatUnter) {
+                        sqq.setHatUnter(ueberID);
+                    }
                     sqq.ErstelleKategorie(kategorie, ueberID, hatUeber);
+
                     message_lbl.Content = "Die Kategorie " + Kategorie.Text + " wurde erfolgreich hinzugefügt!";
                 }
                 catch
@@ -85,6 +93,7 @@ namespace Karteikarten_APP
         {
             this.Close();
         }
+
 
     }
 }

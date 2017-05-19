@@ -8,10 +8,10 @@
         Title="Kartenansicht" Height="480" Width="600">
     <Grid>
         <Button Name="Schließen" Content="Schließen" HorizontalAlignment="Left" Margin="497,394,0,0" VerticalAlignment="Top" Width="75" Click="Schließen_Click" RenderTransformOrigin="0.48,1.591"/>
-        <Label Content="Frage und Antwort" Name="erg" Background="AliceBlue" HorizontalAlignment="Left" Height="225" Margin="49,20,0,0" VerticalAlignment="Top" Width="431"/>
-        <Button Content="ZeigeAntwort" HorizontalAlignment="Left" Height="25" Margin="207,255,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_Zeige_Antwort" RenderTransformOrigin="0.036,0.6"/>
-        <Button Content="Zurück" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="110,258,0,0" Click="Button_Click_Zurück"/>
-        <Button Content="Vor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="325,258,0,0" Click="Button_Click_Vor"/>
+        <Label Content="Frage und Antwort" Name="erg" Background="AliceBlue" HorizontalAlignment="Left" Height="225" Margin="47,53,0,0" VerticalAlignment="Top" Width="431"/>
+        <Button Content="ZeigeAntwort" HorizontalAlignment="Left" Height="25" Margin="204,285,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_Zeige_Antwort" RenderTransformOrigin="0.036,0.6"/>
+        <Button Content="Zurück" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="108,285,0,0" Click="Button_Click_Zurück"/>
+        <Button Content="Vor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="320,288,0,0" Click="Button_Click_Vor" RenderTransformOrigin="0.493,1.545"/>
 
         <Button Content="Richtig: " HorizontalAlignment="Left" Margin="25,315,0,0" VerticalAlignment="Top" Height="26" Click="Button_Click_Richtig" Width="65"/>
         <Label Name="richtiglbl" Content="xxx" HorizontalAlignment="Left" Margin="97,315,0,0" VerticalAlignment="Top"/>
@@ -20,10 +20,14 @@
         <Label Name="falschlbl" Content="xxx" HorizontalAlignment="Left" Margin="97,347,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.132,0"/>
 
 
-        <Button Name="AddPriority" Content="Priorität +" HorizontalAlignment="Left" Margin="497,55,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="0.647,-2.182" Click="AddPriority_Click"/>
-        <Button Name="ReducePriority" Content="Priorität -" HorizontalAlignment="Left" Margin="497,135,0,0" VerticalAlignment="Top" Width="85" Click="ReducePriority_Click"/>
-        <Label Name="PrioLbL" HorizontalAlignment="Left" Margin="497,90,0,0" VerticalAlignment="Top" Height="30" Width="85"/>
+        <Button Name="AddPriority" Content="Priorität +" HorizontalAlignment="Left" Margin="497,87,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="0.647,-2.182" Click="AddPriority_Click"/>
+        <Button Name="ReducePriority" Content="Priorität -" HorizontalAlignment="Left" Margin="497,199,0,0" VerticalAlignment="Top" Width="85" Click="ReducePriority_Click"/>
+        <Label Name="PrioLbL" HorizontalAlignment="Left" Margin="497,149,0,0" VerticalAlignment="Top" Height="30" Width="85"/>
         <Button Name="Reset" Content="Reset" HorizontalAlignment="Left" Margin="25,388,0,0" VerticalAlignment="Top" Width="65" Click="Reset_Click"/>
+        <Label Name="Zaehler" Content="10/10" HorizontalAlignment="Left" Margin="497,51,0,0" VerticalAlignment="Top" Height="30" Width="55"/>
+        <Label Name="Zuletztrichtig" Content="Zuletzt: " HorizontalAlignment="Left" Margin="151,315,0,0" VerticalAlignment="Top" Width="189"/>
+        <Label Name="Kategorie" Content="Kategorie" HorizontalAlignment="Left" Margin="87,20,0,0" VerticalAlignment="Top" Width="336"/>
+        <Label Name="timer" Content="00:00" HorizontalAlignment="Left" Margin="497,10,0,0" VerticalAlignment="Top" Height="36" Width="55"/>
 
 
     </Grid>
