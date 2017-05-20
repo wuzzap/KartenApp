@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Karteikarten_APP"
         mc:Ignorable="d"
-        Title="Kategorieansicht" Height="550" Width="925">
+        Title="Kategorieansicht" Height="550" Width="925" Background="BurlyWood">
     <Grid Name="grid" Margin="0,0,2,10">
         <Button Content="Beenden" HorizontalAlignment="Left" Margin="720,460,0,0" VerticalAlignment="Top" Width="90" Click="Button_Click_Beenden" Height="29" FontSize="15"/>
 

@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Karteikarten_APP"
         mc:Ignorable="d"
-        Title="Kartenansicht" Height="480" Width="600">
+        Title="Kartenansicht" Height="480" Width="600" Background="BurlyWood">
     <Grid>
         <Button Name="Schließen" Content="Schließen" HorizontalAlignment="Left" Margin="497,394,0,0" VerticalAlignment="Top" Width="75" Click="Schließen_Click" RenderTransformOrigin="0.48,1.591"/>
-        <Label Content="Frage und Antwort" Name="erg" Background="AliceBlue" HorizontalAlignment="Left" Height="225" Margin="47,53,0,0" VerticalAlignment="Top" Width="431"/>
+        <Label Content="Frage und Antwort" Name="erg" Background="Gold" HorizontalAlignment="Left" Height="225" Margin="47,53,0,0" VerticalAlignment="Top" Width="431"/>
         <Button Content="ZeigeAntwort" HorizontalAlignment="Left" Height="25" Margin="204,285,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_Zeige_Antwort" RenderTransformOrigin="0.036,0.6"/>
         <Button Content="Zurück" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="108,285,0,0" Click="Button_Click_Zurück"/>
         <Button Content="Vor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="320,288,0,0" Click="Button_Click_Vor" RenderTransformOrigin="0.493,1.545"/>
