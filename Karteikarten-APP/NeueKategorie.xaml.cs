@@ -29,14 +29,15 @@ namespace Karteikarten_APP
 
         private void updateView()
         {
-            List<int> StapelIds = new List<int>(sqq.HoleAlleStapelIDs());
+            List<int> StapelIds = new List<int>(sqq.getAllStackIds());
             ComboBoxItem cbi = new ComboBoxItem();
+            combo.Items.Clear();
             sqlkram.VerbindungAufbauen();
-            for (int i = 0; i < sqq.ZaehleStapel(); i++)
+            for (int i = 0; i < sqq.countStacks(); i++)
             {
                 if (!sqq.hatKarten(StapelIds[i]))
                 {
-                    combo.Items.Add(sqq.zeigeKategorie(StapelIds[i]));
+                    combo.Items.Add(sqq.getCategoryName(StapelIds[i]));
 
                 }
             }

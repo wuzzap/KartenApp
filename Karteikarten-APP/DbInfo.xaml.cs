@@ -27,8 +27,8 @@ namespace Karteikarten_APP
             //anzKarten.Content = "Es gibt "+sqq.ZaehleKarten()+" Karten";
             //anzStapel.Content="Es gibt "+sqq.ZaehleStapel() + " Stapel";
 
-            anzKarten.Content = "Es gibt " + sqq.count("KartenID","Karten") + " Karten";
-            anzStapel.Content = "Es gibt " + sqq.count("StapelID", "Kategorien") + " Stapel";
+            anzKarten.Content = "Es gibt " + sqq.count("Karten","Karten") + " Karten";
+            anzStapel.Content = "Es gibt " + sqq.countStacks() + " Stapel";
         }
 
         private void Button_Click_Close(object sender, RoutedEventArgs e)

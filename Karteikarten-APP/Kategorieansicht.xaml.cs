@@ -51,14 +51,14 @@ namespace Karteikarten_APP
         private void openStack(int i)
         {
 
-            sqq.changeTime(i, "Kategorien");
+            sqq.changeCategoryTime(i);
             showCategories(i);
         }
 
         private void openStack(int i,bool firstRun)
         {
 
-            sqq.changeTime(i, "Kategorien");
+            sqq.changeCategoryTime(i);
             showCategories(i,firstRun);
         }
 
@@ -96,6 +96,8 @@ namespace Karteikarten_APP
         {
             var wnd = new NeueKarte();
             wnd.Show();
+           // wnd.Closed += Window_Closed;
+           // wnd.Show.ShowDialog();
         }
         
         private void showCategories(int i,bool firstRun=true, int priority = 5, bool justPriority=false)
@@ -152,7 +154,7 @@ namespace Karteikarten_APP
                         KategorieButton.Width = KategorieBox.Width - 15;
                         KategorieButton.Height = 40;
                         KategorieButton.Name = "Kat" + x;
-                        KategorieButton.Content = (x + 1) + " : " + sqq.zeigeKategorie(StapelIds[x]);
+                        KategorieButton.Content = (x + 1) + " : " + sqq.getCategoryName(StapelIds[x]);
                         KategorieButton.Visibility = Visibility.Visible;
 
                         MyButton AlleFragenButton = new MyButton((StapelIds[x]));
@@ -180,13 +182,15 @@ namespace Karteikarten_APP
                     //OffeneFragenButton.Content = sqq.ZaehleKarten(StapelIds[x]);
                     int openQuestions= sqq.count("KartenID", "Karten", " Prioritaet>5 AND StapelID==" + StapelIds[x]);
                     OffeneFragenButton.Content = openQuestions;
-                    if (openQuestions > 0)
+                  if (openQuestions > 0)
                     {
-                        OffeneFragenButton.Visibility = Visibility.Visible;
+                        OffeneFragenButton.Content = openQuestions;
+                       // OffeneFragenButton.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        OffeneFragenButton.Visibility = Visibility.Hidden;
+                        OffeneFragenButton.Content = "X";
+                        //OffeneFragenButton.Visibility = Visibility.Hidden;
                     }
                         Label lastTry = new Label();
 

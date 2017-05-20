@@ -25,13 +25,14 @@
         <Label Name="PrioLbL" HorizontalAlignment="Left" Margin="497,149,0,0" VerticalAlignment="Top" Height="30" Width="85"/>
         <Button Name="Reset" Content="Reset" HorizontalAlignment="Left" Margin="25,388,0,0" VerticalAlignment="Top" Width="65" Click="Reset_Click"/>
         <Label Name="Zaehler" Content="10/10" HorizontalAlignment="Left" Margin="497,51,0,0" VerticalAlignment="Top" Height="30" Width="55"/>
-        
+
         <Label Name="Zuletztrichtig" Content="Zuletzt: " HorizontalAlignment="Left" Margin="151,315,0,0" VerticalAlignment="Top" Width="189"/>
         <Label Name="Zuletztfalsch" Content="Zuletzt: " HorizontalAlignment="Left" Margin="151,341,0,0" VerticalAlignment="Top" Width="189"/>
-        
+
         <Label Name="Kategorie" Content="Kategorie" HorizontalAlignment="Left" Margin="87,20,0,0" VerticalAlignment="Top" Width="336"/>
-        <Label Name="timer" Content="00:00" HorizontalAlignment="Left" Margin="497,10,0,0" VerticalAlignment="Top" Height="36" Width="55"/>
-       
+        <Label Name="timer" Content="00:01" HorizontalAlignment="Left" Margin="488,10,0,0" VerticalAlignment="Top" Height="36" Width="55"/>
+        <Label Name="dauerlbl" Content="00:00" HorizontalAlignment="Left" Margin="533,10,-0.4,0" VerticalAlignment="Top" RenderTransformOrigin="-0.263,0.187" Width="61"/>
+
 
 
     </Grid>

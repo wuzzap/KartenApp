@@ -9,9 +9,30 @@ namespace Karteikarten_APP
 {
     class Stapel : List<Karte>
     {
-        static Stapel()
+        private int ID;
+        private int ParentID;
+        private string stackName;
+        private bool gotChild;
+        private bool gotParent;
+        private bool hasCards;
+        private DateTime lastUse;
+
+        public Stapel()
         {
             
         }
+
+        public Stapel(int ID,int ParentID,string stackName,bool gotChild,bool gotParent,bool hasCards,DateTime lastUse){
+            this.ID = ID;
+            this.ParentID = ParentID;
+            this.stackName = stackName;
+            this.gotChild = gotChild;
+            this.gotParent = gotParent;
+            this.hasCards = hasCards;
+            this.lastUse = lastUse;
+        }
+
+
+
     }
 }

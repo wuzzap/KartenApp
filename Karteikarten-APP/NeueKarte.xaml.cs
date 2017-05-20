@@ -25,15 +25,15 @@ namespace Karteikarten_APP
             InitializeComponent();
 
 
-            List<int> StapelIds = new List<int>(sqq.HoleAlleStapelIDs());
+            List<int> StapelIds = new List<int>(sqq.getAllStackIds());
             ComboBoxItem cbi = new ComboBoxItem();
 
            // sqlkram.VerbindungAufbauen(); // CHANGED 
-            for (int i = 0; i < sqq.ZaehleStapel(); i++)
+            for (int i = 0; i < sqq.countStacks(); i++)
             {
                 if (!sqq.HatUnter(StapelIds[i]))
                 {
-                    KategorieCombo.Items.Add(sqq.zeigeKategorie(StapelIds[i]));
+                    KategorieCombo.Items.Add(sqq.getCategoryName(StapelIds[i]));
 
                 }
             }

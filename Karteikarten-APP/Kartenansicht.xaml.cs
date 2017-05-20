@@ -27,7 +27,9 @@ namespace Karteikarten_APP
         bool changeWrong = false;
         bool changeCorrectTime = false;
         bool changeWrongTime = false;
+        bool changeDuration = false;
         int index;
+        TimeSpan dauer;
         DispatcherTimer _timer;
         TimeSpan _time;
 
@@ -59,15 +61,16 @@ namespace Karteikarten_APP
 
             InitializeComponent();
 
-            _time = TimeSpan.Zero;
 
+            // mit Hilfe von Olaf
+            _time = TimeSpan.Zero;
             _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
             {
                 timer.Content = _time.ToString("c");
                 _time = _time.Add(TimeSpan.FromSeconds(+1));
             }, Application.Current.Dispatcher);
-
             _timer.Start();
+
 
 
         }
@@ -78,11 +81,11 @@ namespace Karteikarten_APP
             //bei karte anheften
           //  long dt = sqq.getLong("select correctTime from Karten where KartenID==" + karte[index].kartenID, "correctTime");
             //DateTime dtx = new DateTime(dt);
-            DateTime dtx = sqq.get_correctTime(karte[index].kartenID);
-            Zuletztrichtig.Content = "Zuletzt : " + dtx;
+          //  DateTime dtx = sqq.get_correctTime(karte[index].kartenID);
+            Zuletztrichtig.Content = "Zuletzt : " + karte[index].correctTime;
 
-            DateTime dtx2 = sqq.get_wrongTime(karte[index].kartenID);
-            Zuletztfalsch.Content = "Zuletzt : " + dtx2;
+            //DateTime dtx2 = sqq.get_wrongTime(karte[index].kartenID);
+            Zuletztfalsch.Content = "Zuletzt : " + karte[index].wrongTime;
 
             _time = TimeSpan.Zero;
             erg.Content = karte[index].frage;
@@ -92,6 +95,7 @@ namespace Karteikarten_APP
             erg.Content = karte[index].frage;
             Zaehler.Content = ((index+1) + " / " + karte.Count);
             Kategorie.Content = karte[index].kategorie;
+            dauerlbl.Content = karte[index].dauer;
             
         }
 
@@ -99,17 +103,17 @@ namespace Karteikarten_APP
         {
             if (changePriority) sqq.changeIntVars("Prioritaet", karte[index].priority, karte[index].kartenID);
             if (changeCorrect) sqq.changeIntVars("Korrekt", karte[index].correct, karte[index].kartenID);
-            if (changeWrong)  sqq.changeIntVars("Falsch", karte[index].wrong, karte[index].kartenID);
-            if (changeCorrectTime) sqq.changeTime(karte[index].kartenID,"CorrectTime","Karten");
-            if (changeWrongTime) sqq.changeTime(karte[index].correct, "wrongTime", "Karten");
+            if (changeWrong) sqq.changeIntVars("Falsch", karte[index].wrong, karte[index].kartenID);
+            if (changeDuration) sqq.changeDuration(karte[index].kartenID, karte[index].dauer.Ticks);
+            if (changeCorrectTime == true) sqq.changeCorrectTime(karte[index].kartenID);
+            if (changeWrongTime == true) sqq.changeWrongTime(karte[index].kartenID);
             changeWrong = false;
             changeCorrect = false;
             changePriority = false;
             changeCorrectTime = false;
             changeWrongTime = false;
-            // changeWrongTime = false;
+            changeDuration = false;
         }
-
 
 
         private void Button_Click_Zeige_Antwort(object sender, RoutedEventArgs e)
@@ -157,9 +161,12 @@ namespace Karteikarten_APP
         {
             karte[index].correct += 1;
             karte[index].priority -= 1;
+            karte[index].correctTime = DateTime.Now;
+            karte[index].dauer = _time;
             changeCorrect = true;
             changePriority = true;
             changeCorrectTime = true;
+            changeDuration = true;
             updateView(index);
         }
 
@@ -167,9 +174,13 @@ namespace Karteikarten_APP
         {
             karte[index].wrong += 1;
             karte[index].priority += 1;
+            karte[index].wrongTime = DateTime.Now;
+            karte[index].dauer = _time;
             changeWrong = true;
             changePriority = true;
             changeWrongTime = true;
+            changeDuration = true;
+
             updateView(index);
         }
 

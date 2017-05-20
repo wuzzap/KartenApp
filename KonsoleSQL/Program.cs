@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using System.Data.SQLite.EF6;
 using System.Data.SQLite.Linq;
 
+
 namespace KonsoleSQL
 {
     class Program
@@ -15,10 +16,16 @@ namespace KonsoleSQL
         
         static int anzStapel;
         static int anzKarten;
+       static  TimeSpan dauer = new TimeSpan();
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+  
+
+
+            Console.WriteLine(dauer.Ticks);
+            Console.ReadLine();
+          /*  Console.WriteLine("Hello World!");
             System.DateTime jetzt = System.DateTime.Now;
             Console.WriteLine(jetzt.Ticks);
             Console.WriteLine(jetzt);
@@ -26,12 +33,12 @@ namespace KonsoleSQL
             long x = jetzt.Ticks;
             DateTime eben = new DateTime();
           //  eben.Ticks = x;
-
+          
 
             DateTime eben2 = DateTime.Now;
             eben2.AddTicks(x);
 
-            Console.WriteLine(x);
+            Console.WriteLine(x);*/
 
             // VerbindungAufbauen();
             // Console.WriteLine(ZeigeFragen());
