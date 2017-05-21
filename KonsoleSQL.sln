@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonsoleSQL", "KonsoleSQL\Ko
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Karteikarten-APP", "Karteikarten-APP\Karteikarten-APP.csproj", "{FB82CEAA-47D0-4FE5-A418-B849C2C3703A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "learningProggy", "learningProggy\learningProggy.csproj", "{98EDE238-BEFA-4AD7-909C-1AF08748B513}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FB82CEAA-47D0-4FE5-A418-B849C2C3703A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB82CEAA-47D0-4FE5-A418-B849C2C3703A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB82CEAA-47D0-4FE5-A418-B849C2C3703A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EDE238-BEFA-4AD7-909C-1AF08748B513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EDE238-BEFA-4AD7-909C-1AF08748B513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EDE238-BEFA-4AD7-909C-1AF08748B513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EDE238-BEFA-4AD7-909C-1AF08748B513}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

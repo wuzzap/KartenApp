@@ -131,7 +131,7 @@ namespace Karteikarten_APP
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
 
             try
-            {
+            { 
                 SQLiteDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())

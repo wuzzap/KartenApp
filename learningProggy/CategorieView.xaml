@@ -1,0 +1,36 @@
+﻿<Window x:Class="learningProggy.CategorieView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:learningProggy"
+        mc:Ignorable="d"
+   Title="Kategorieansicht" Height="550" Width="925" Background="BurlyWood">
+    <Grid Name="grid" Margin="0,0,2,10">
+        <Label Content="Kategorie" HorizontalAlignment="Left" Margin="195,29,0,0" VerticalAlignment="Top" Width="305" Height="46" FontSize="25"/>
+        <ListBox Name="CategoryNameBox" Background="DarkGray" HorizontalAlignment="Left" Height="325" Margin="45,80,0,0" VerticalAlignment="Top" Width="505"/>
+
+        <Label Content="Alle" HorizontalAlignment="Left" Margin="555,29,0,0" VerticalAlignment="Top" Height="57" Width="80" FontSize="25"/>
+        <ListBox Name="QuantityOfQuestionBox" HorizontalAlignment="Left" Height="325" Margin="555,80,0,0" VerticalAlignment="Top" Width="80"/>
+
+        <ListBox Name="QuantityOfPrioQuestionBox" HorizontalAlignment="Left" Height="325" Margin="640,80,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="Todo" HorizontalAlignment="Left" Margin="635,29,0,0" VerticalAlignment="Top" Height="57" Width="80" FontSize="25"/>
+
+        <Label Content="Zuletzt" HorizontalAlignment="Left" Margin="746,29,0,0" VerticalAlignment="Top" Width="122" Height="40" FontSize="25"/>
+        <ListBox Name="ZuletztBox" HorizontalAlignment="Left" Height="325" Margin="730,80,0,0" VerticalAlignment="Top" Width="155"/>
+
+
+        <Button Name="NewCategoryBtn" Content="Neue Kategorie" HorizontalAlignment="Left" Margin="45,430,0,0" VerticalAlignment="Top" Width="113" RenderTransformOrigin="-0.533,0.227" Click="Button_Click_NewCategoryBtn"/>
+        <Button Name="NewCardBtn" Content="Neue Karte" HorizontalAlignment="Left" Margin="225,430,0,0" VerticalAlignment="Top" Width="110" Click="Button_Click_NewCardBtn"/>
+        <Button Name="HomeBtn" Content="Home" HorizontalAlignment="Left" Margin="604,463,0,0" VerticalAlignment="Top" Width="87" FontSize="15" Height="26" Click="Button_Click_HomeBtn"/>
+        <Button Name="CloseBtn" Content="Schließen" HorizontalAlignment="Left" Margin="720,460,0,0" VerticalAlignment="Top" Width="90" Click="Button_Click_CloseBtn" Height="29" FontSize="15"/>
+
+        
+        <Button Name="autoStackBtn" Content="Auto" HorizontalAlignment="Left" Margin="810,414,0,0" VerticalAlignment="Top" FontSize="15" Width="75" Click="Button_Click_autoStackBtn"/>
+        <TextBox Name="anzAuto" HorizontalAlignment="Left" Height="23" Margin="618,417,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="32"/>
+        <ComboBox Name="autoCombo" Text="RandomPrio" HorizontalAlignment="Left" Margin="668,414,0,0" VerticalAlignment="Top" Width="120" FontSize="15"/>
+
+
+
+    </Grid>
+</Window>
