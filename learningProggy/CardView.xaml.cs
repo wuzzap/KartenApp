@@ -13,15 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Karteikarten_APP
+
+namespace learningProggy
 {
-    /// <summary>
-    /// Interaktionslogik für Kartenansicht.xaml
-    /// </summary>
-    public partial class Kartenansicht : Window
+
+    public partial class CardView : Window
     {
-        public static sqlkram sqq = new sqlkram();
-        public static List<Karte> karte;
+        static sqlte_connector sc = new sqlte_connector();
+
+        public static List<Card> card;
         bool changePriority = false;
         bool changeCorrect = false;
         bool changeWrong = false;
@@ -29,35 +29,14 @@ namespace Karteikarten_APP
         bool changeWrongTime = false;
         bool changeDuration = false;
         int index;
-        TimeSpan dauer;
+        TimeSpan duration;
         DispatcherTimer _timer;
         TimeSpan _time;
 
-        public Kartenansicht(int StapelID,string mode="", int priority = 5, bool justPriority = false)
-        {
-            switch (mode)
-            {
-                case "":
-                    if (!justPriority)
-                    {
-                        List<int> kartenx = new List<int>(sqq.ErstelleKarten(StapelID));
-                        karte = new List<Karte>(sqq.buildCards(kartenx));
-                    }
-                    else
-                    {
-                        karte = new List<Karte>(sqq.createPriorityCards(StapelID, priority));
-
-                    }
-                    break;
-
-                case "Random": karte = new List<Karte>(sqq.createRandomCards(StapelID)); break;    // StapelID ist in diesem Falle die Anzahl der Fragen
-                case "RandomPrio": karte = new List<Karte>(sqq.createRandomPrioCards(StapelID)); break;      // StapelID ist in diesem Falle die Anzahl der Fragen
-              //  case "HoheBearbeitungszeit"
-            }
-
-
+        public CardView(List<Card> card)
+        {   
             this.index = 0;
-            this.DataContext = karte[this.index];
+            this.DataContext = card[this.index];
             InitializeComponent();
             updateView(index);
 
@@ -72,43 +51,32 @@ namespace Karteikarten_APP
                 _time = _time.Add(TimeSpan.FromSeconds(+1));
             }, Application.Current.Dispatcher);
             _timer.Start();
-
-
-
         }
 
         private void updateView(int index)
         {
-
-            //bei karte anheften
-          //  long dt = sqq.getLong("select correctTime from Karten where KartenID==" + karte[index].kartenID, "correctTime");
-            //DateTime dtx = new DateTime(dt);
-          //  DateTime dtx = sqq.get_correctTime(karte[index].kartenID);
-            Zuletztrichtig.Content = "Zuletzt : " + karte[index].correctTime;
-
-            //DateTime dtx2 = sqq.get_wrongTime(karte[index].kartenID);
-            Zuletztfalsch.Content = "Zuletzt : " + karte[index].wrongTime;
-
+            Zuletztrichtig.Content = "Zuletzt : " + card[index].correctTime;
+            Zuletztfalsch.Content = "Zuletzt : " + card[index].wrongTime;
             _time = TimeSpan.Zero;
-            erg.Content = karte[index].frage;
-            richtiglbl.Content = karte[index].correct;
-            falschlbl.Content = karte[index].wrong;
-            PrioLbL.Content = karte[index].priority;
-            erg.Content = karte[index].frage;
-            Zaehler.Content = ((index+1) + " / " + karte.Count);
-            Kategorie.Content = karte[index].kategorie;
-            dauerlbl.Content = karte[index].dauer;
-            
+            erg.Content = card[index].question;
+            richtiglbl.Content = card[index].correct;
+            falschlbl.Content = card[index].wrong;
+            PrioLbL.Content = card[index].priority;
+            erg.Content = card[index].question;
+            Zaehler.Content = ((index + 1) + " / " + card.Count);
+            Kategorie.Content = card[index].stackName;
+            durationlbl.Content = card[index].duration;
+
         }
 
         private void updateDB(int index)
         {
-            if (changePriority) sqq.changeIntVars("Prioritaet", karte[index].priority, karte[index].kartenID);
-            if (changeCorrect) sqq.changeIntVars("Korrekt", karte[index].correct, karte[index].kartenID);
-            if (changeWrong) sqq.changeIntVars("Falsch", karte[index].wrong, karte[index].kartenID);
-            if (changeDuration) sqq.changeDuration(karte[index].kartenID, karte[index].dauer.Ticks);
-            if (changeCorrectTime == true) sqq.changeCorrectTime(karte[index].kartenID);
-            if (changeWrongTime == true) sqq.changeWrongTime(karte[index].kartenID);
+            if (changePriority) sc.changeIntVars("Priority", card[index].priority, card[index].ID);
+            if (changeCorrect) sc.changeIntVars("Correkt", card[index].correct, card[index].ID);
+            if (changeWrong) sc.changeIntVars("Wrong", card[index].wrong, card[index].ID);
+            if (changeDuration) sc.changeDuration(card[index].ID, card[index].duration.Ticks);
+            if (changeCorrectTime == true) sc.changeCorrectTime(card[index].ID);
+            if (changeWrongTime == true) sc.changeWrongTime(card[index].ID);
             changeWrong = false;
             changeCorrect = false;
             changePriority = false;
@@ -120,13 +88,13 @@ namespace Karteikarten_APP
 
         private void Button_Click_Zeige_Antwort(object sender, RoutedEventArgs e)
         {
-            if (erg.Content == karte[index].frage)
+            if (erg.Content == card[index].question)
             {
-                erg.Content = karte[index].antwort;
+                erg.Content = card[index].answer;
             }
             else
             {
-                erg.Content = karte[index].frage;
+                erg.Content = card[index].question;
             }
         }
 
@@ -139,7 +107,7 @@ namespace Karteikarten_APP
             }
             else
             {
-                index = karte.Count() - 1;
+                index = card.Count() - 1;
             }
             updateView(index);
             updateDB(index);
@@ -148,7 +116,7 @@ namespace Karteikarten_APP
         private void Button_Click_Vor(object sender, RoutedEventArgs e)
         {
             updateDB(index);
-            if (index < karte.Count - 1)
+            if (index < card.Count - 1)
             {
                 index += 1;
             }
@@ -161,10 +129,10 @@ namespace Karteikarten_APP
 
         private void Button_Click_Richtig(object sender, RoutedEventArgs e)
         {
-            karte[index].correct += 1;
-            karte[index].priority -= 1;
-            karte[index].correctTime = DateTime.Now;
-            karte[index].dauer = _time;
+            card[index].correct += 1;
+            card[index].priority -= 1;
+            card[index].correctTime = DateTime.Now;
+            card[index].duration = _time;
             changeCorrect = true;
             changePriority = true;
             changeCorrectTime = true;
@@ -174,10 +142,10 @@ namespace Karteikarten_APP
 
         private void Button_Click_Wrong(object sender, RoutedEventArgs e)
         {
-            karte[index].wrong += 1;
-            karte[index].priority += 1;
-            karte[index].wrongTime = DateTime.Now;
-            karte[index].dauer = _time;
+            card[index].wrong += 1;
+            card[index].priority += 1;
+            card[index].wrongTime = DateTime.Now;
+            card[index].duration = _time;
             changeWrong = true;
             changePriority = true;
             changeWrongTime = true;
@@ -188,22 +156,22 @@ namespace Karteikarten_APP
 
         private void ReducePriority_Click(object sender, RoutedEventArgs e)
         {
-            karte[index].priority -= 1;
+            card[index].priority -= 1;
             changePriority = true;
             updateView(index);
         }
 
         private void AddPriority_Click(object sender, RoutedEventArgs e)
         {
-            karte[index].priority += 1;
+            card[index].priority += 1;
             changePriority = true;
             updateView(index);
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            karte[index].correct = 0;     
-            karte[index].wrong = 0;
+            card[index].correct = 0;
+            card[index].wrong = 0;
             changeWrong = true;
             changeCorrect = true;
             changeCorrectTime = true;

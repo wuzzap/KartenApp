@@ -317,19 +317,9 @@ namespace Karteikarten_APP
         {
             TimeSpan dur = new TimeSpan();
             long dauer = 0;
-            VerbindungAufbauen();
-
             string sql = "select dauer from Karten where KartenID==" + KartenID;
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                var temp = Convert.ChangeType(reader["dauer"], typeof(int)) as int?;
-                dauer = (long)temp;
-            }
+            dauer = getLong(sql, "dauer");
             dur = new TimeSpan(dauer);
-            reader.Close();
-            VerbindungBeenden();
             return dur;
 
         }
@@ -540,9 +530,15 @@ namespace Karteikarten_APP
                 dt = (long)var;
                 DateTime wrongTime = new DateTime(dt);
 
-                karten.Add(new Karte(KartenID, frage, antwort, correct, wrong, prority, kategorie, correctTime,wrongTime));
+                var = Convert.ChangeType(reader["time"], typeof(long)) as long?;
+                dt = (long)var;
+                DateTime time = new DateTime(dt);
+
+                var = Convert.ChangeType(reader["dauer"], typeof(long)) as long?;
+                dt = (long)var;
+                TimeSpan dauer = new TimeSpan(dt);
+                karten.Add(new Karte(KartenID, frage, antwort, correct, wrong, prority, kategorie, correctTime, wrongTime, time, dauer));
             }
-            reader.Close();
 
             VerbindungBeenden();
             return karten;
@@ -554,54 +550,77 @@ namespace Karteikarten_APP
 
 
         // todo: wiederholungen eliminieren
-        public List<Karte> ErstelleKarten(int StapelID)
+        public List<int> ErstelleKarten(int StapelID)
         {
+            List<int> ids = new List<int>();
             VerbindungAufbauen();
-            List<Karte> karten = new List<Karte>();
-            string erg = "";
             string sql = "select * from Karten where StapelID==" + StapelID;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
-
+            int max = 0;
             while (reader.Read())
             {
-                erg = ("Name: " + reader["Frage"]);
-                string frage = ("Frage: " + reader["Frage"]);
-                string antwort = ("Antwort: " + reader["Antwort"]);
-                string kategorie = ("Kategorie: " + reader["Kategorie"]);
-                var temp = Convert.ChangeType(reader["Korrekt"], typeof(int)) as int?;
-                int correct = (int)temp;
-                
-                temp = Convert.ChangeType(reader["Falsch"], typeof(int)) as int?;
-                int wrong = (int)temp;
-
-                temp = Convert.ChangeType(reader["Prioritaet"], typeof(int)) as int?;
-                int prority = (int)temp;
-
-                temp = Convert.ChangeType(reader["KartenID"], typeof(int)) as int?;
+                var temp = Convert.ChangeType(reader["KartenID"], typeof(int)) as int?;
                 int KartenID = (int)temp;
-
-
-                var var = Convert.ChangeType(reader["correctTime"], typeof(long)) as long?;
-                long dt = (long)var;
-                DateTime correctTime = new DateTime(dt);
-
-                var = Convert.ChangeType(reader["wrongTime"], typeof(long)) as long?;
-                dt = (long)var;
-                DateTime wrongTime = new DateTime(dt);
-
-                var = Convert.ChangeType(reader["dauer"], typeof(long)) as long?;
-                dt = (long)var;
-                TimeSpan dauer = new TimeSpan(dt);
-
-
-                karten.Add(new Karte(KartenID, frage, antwort, correct, wrong, prority, kategorie, correctTime, wrongTime));
+                ids.Add(KartenID);
             }
-            reader.Close();
+            return ids;
+        }
+
+        public List<Karte> buildCards(List<int> list)
+        {
+                       VerbindungAufbauen();
+            List<Karte> karten = new List<Karte>();
+
+            for(int i = 0; i < list.Count(); i++)
+            {
+                string sql = "select * from Karten where StapelID==" + list[i];
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string erg = ("Name: " + reader["Frage"]);
+                    string frage = ("Frage: " + reader["Frage"]);
+                    string antwort = ("Antwort: " + reader["Antwort"]);
+                    string kategorie = ("Kategorie: " + reader["Kategorie"]);
+                    var temp = Convert.ChangeType(reader["Korrekt"], typeof(int)) as int?;
+                    int correct = (int)temp;
+
+                    temp = Convert.ChangeType(reader["Falsch"], typeof(int)) as int?;
+                    int wrong = (int)temp;
+
+                    temp = Convert.ChangeType(reader["Prioritaet"], typeof(int)) as int?;
+                    int prority = (int)temp;
+
+                    temp = Convert.ChangeType(reader["KartenID"], typeof(int)) as int?;
+                    int KartenID = (int)temp;
+
+
+                    var var = Convert.ChangeType(reader["correctTime"], typeof(long)) as long?;
+                    long dt = (long)var;
+                    DateTime correctTime = new DateTime(dt);
+
+                    var = Convert.ChangeType(reader["wrongTime"], typeof(long)) as long?;
+                    dt = (long)var;
+                    DateTime wrongTime = new DateTime(dt);
+
+                    var = Convert.ChangeType(reader["time"], typeof(long)) as long?;
+                    dt = (long)var;
+                    DateTime time = new DateTime(dt);
+
+                    var = Convert.ChangeType(reader["dauer"], typeof(long)) as long?;
+                    dt = (long)var;
+                    TimeSpan dauer = new TimeSpan(dt);
+                    karten.Add(new Karte(KartenID, frage, antwort, correct, wrong, prority, kategorie, correctTime, wrongTime, time, dauer));
+
+                }
+                reader.Close();
+            }
+
             VerbindungBeenden();
             return karten;
         }
-
         // todo: wiederholungen eliminieren
         public List<Karte> createRandomCards(int anzAuto)
         {
@@ -653,8 +672,14 @@ namespace Karteikarten_APP
                     dt = (long)var;
                     DateTime wrongTime = new DateTime(dt);
 
+                    var = Convert.ChangeType(reader["time"], typeof(long)) as long?;
+                    dt = (long)var;
+                    DateTime time = new DateTime(dt);
 
-                    karten.Add(new Karte(KartenID, frage, antwort, correct, wrong, prority, kategorie, correctTime, wrongTime));
+                    var = Convert.ChangeType(reader["dauer"], typeof(long)) as long?;
+                    dt = (long)var;
+                    TimeSpan dauer = new TimeSpan(dt);
+                    karten.Add(new Karte(KartenID, frage, antwort, correct, wrong, prority, kategorie, correctTime, wrongTime, time, dauer));
                 }
             }
             reader.Close();
@@ -714,8 +739,14 @@ namespace Karteikarten_APP
                     dt = (long)var;
                     DateTime wrongTime = new DateTime(dt);
 
+                    var = Convert.ChangeType(reader["time"], typeof(long)) as long?;
+                    dt = (long)var;
+                    DateTime time = new DateTime(dt);
 
-                    karten.Add(new Karte(KartenID, frage, antwort, correct, wrong, prority, kategorie, correctTime, wrongTime));
+                    var = Convert.ChangeType(reader["dauer"], typeof(long)) as long?;
+                    dt = (long)var;
+                    TimeSpan dauer = new TimeSpan(dt);
+                    karten.Add(new Karte(KartenID, frage, antwort, correct, wrong, prority, kategorie, correctTime, wrongTime, time, dauer));
                 }
             }
             reader.Close();

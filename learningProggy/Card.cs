@@ -8,51 +8,77 @@ namespace learningProggy
 {
     public class Card
     {
-        public int kartenID;
-        public string frage;
-        public string antwort;
+        static sqlte_connector sc = new sqlte_connector();
+
+        public int ID;
+        public string question;
+        public string answer;
         public int correct;
         public int wrong;
         public int priority;
-        public string kategorie;
+        public string stackName;
 
 
         public DateTime correctTime;
         public DateTime wrongTime;
-        public DateTime time;
-        public TimeSpan dauer;
+        public DateTime creationTime;
+        public TimeSpan duration;
 
         public Card()
         {
-
-        }
-
-        public Card(int kartenID, string frage, string antwort, int correct, int wrong, int priority, string kategorie, DateTime correctTime, DateTime wrongTime)
-        {
-            this.kartenID = kartenID;
-            this.frage = frage;
-            this.antwort = antwort;
+            this.ID = ID;
+            this.question = question;
+            this.answer = answer;
             this.correct = correct;
             this.wrong = wrong;
             this.priority = priority;
-            this.kategorie = kategorie;
+            this.stackName = stackName;
             this.correctTime = correctTime;
             this.wrongTime = wrongTime;
-
+            this.creationTime = creationTime;
+            this.duration = duration;
         }
-        public Card(int kartenID, string frage, string antwort, int correct, int wrong, int priority, string kategorie, DateTime correctTime, DateTime wrongTime, DateTime time, TimeSpan dauer)
+
+        public Card(int ID)
         {
-            this.kartenID = kartenID;
-            this.frage = frage;
-            this.antwort = antwort;
+            this.ID = ID;
+            this.question = sc.getQuestion(ID);
+            this.answer = sc.getAnswer(ID);
+            this.correct = sc.getCorrect(ID);
+            this.wrong = sc.getWrong(ID);
+            this.priority = sc.getPriority(ID);
+            this.stackName = sc.getStackName(ID);
+            this.correctTime = sc.get_CorrectTime(ID);
+            this.wrongTime = sc.get_wrongTime(ID);
+            this.creationTime = sc.get_CardCreationTime(ID);
+            this.duration = sc.getDuration(ID);
+        }
+
+        public Card(int ID, string question, string answer, int correct, int wrong, int priority, string stackName, DateTime correctTime, DateTime wrongTime, DateTime creationTime, TimeSpan duration)
+        {
+            this.ID = ID;
+            this.question = question;
+            this.answer = answer;
             this.correct = correct;
             this.wrong = wrong;
             this.priority = priority;
-            this.kategorie = kategorie;
+            this.stackName = stackName;
             this.correctTime = correctTime;
             this.wrongTime = wrongTime;
-            this.time = time;
-            this.dauer = dauer;
+            this.creationTime = creationTime;
+            this.duration = duration;
+        }
+
+        public static List<Card> createCards(List<int> list)
+        {
+            List<Card> cards = new List<Card>();
+
+            for(int i = 0; i < list.Count; i++)
+            {
+                Card card = new Card(list[i]);
+                cards.Add(card);
+            }
+            return cards;
         }
 
 
