@@ -20,6 +20,7 @@ namespace learningProggy
     public partial class NewCategory : Window
     {
         static sqlte_connector sc = new sqlte_connector();
+        Stack sk = new Stack();
         public NewCategory()
         {
             InitializeComponent();
@@ -28,15 +29,15 @@ namespace learningProggy
 
         private void updateView()
         {
-            List<int> StapelIds = new List<int>(sc.getAllStackIds());
+            List<int> StackIDs = new List<int>(sc.getAllStackIds());
             ComboBoxItem cbi = new ComboBoxItem();
             combo.Items.Clear();
-            sqlte_connector.connect();
-            for (int i = 0; i < sc.countStacks(); i++)
+            
+            for (int i = 0; i < StackIDs.Count(); i++)
             {
-                if (!sc.hatKarten(StapelIds[i]))
+                if (!sc.gotCards(StackIDs[i]))
                 {
-                    combo.Items.Add(sc.getCategoryName(StapelIds[i]));
+                    combo.Items.Add(sk.getCategoryName(StackIDs[i]));
 
                 }
             }
@@ -46,7 +47,7 @@ namespace learningProggy
         private void Button_Click_Add(object sender, RoutedEventArgs e)
         {
 
-            if (sc.nochFrei(Kategorie.Text))
+            if (sc.gotCards(Kategorie.Text))
             {
                 string kategorie = Kategorie.Text;
                 bool hatUeber = false;
@@ -63,7 +64,7 @@ namespace learningProggy
                 {
                     hatUnter = true;        // mutterstapel
                     hatUeber = true;        // neuer stapel
-                    ueberID = sc.HoleStapelIDs((string)combo.SelectedItem)[0];
+                    ueberID = sc.getParentId((string)combo.SelectedItem)[0];
                 }
 
                 try
