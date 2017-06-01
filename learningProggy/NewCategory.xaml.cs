@@ -28,19 +28,14 @@ namespace learningProggy
 
         private void updateView()
         {
-            List<int> StapelIds = new List<int>(sc.getAllStackIds());
+            List<int> StackIDs = new List<int>(sc.getAllStackIds());
             ComboBoxItem cbi = new ComboBoxItem();
             combo.Items.Clear();
-            sqlte_connector.connect();
-            for (int i = 0; i < sc.countStacks(); i++)
+            for (int i = 0; i < StackIDs.Count(); i++)
             {
-                if (!sc.hatKarten(StapelIds[i]))
-                {
-                    combo.Items.Add(sc.getCategoryName(StapelIds[i]));
-
-                }
+                if (!sc.gotCards(StackIDs[i])) combo.Items.Add(sc.getCategoryName(StackIDs[i]));
             }
-            sqlte_connector.dc();
+            
         }
 
         private void Button_Click_Add(object sender, RoutedEventArgs e)
