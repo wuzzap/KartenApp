@@ -18,31 +18,50 @@ namespace learningProggy
             m_dbConnection = new SQLiteConnection("Data Source=KarteiDB.sqlite;Version=3;");
             m_dbConnection.Open();
         }
+        public static void dc(){           m_dbConnection.Close();       }
 
-        public static void dc()
-        {
-            m_dbConnection.Close();
-        }
+
 
         //getter Boolean
-        public Boolean getStackBool(int ID,string field)
+        public bool getStackBool(int ID, string field)
         {
-            bool temp = false;
             connect();
-            string sql = "select "+field+" from Categories where ID==" + ID;
+            bool erg = false;
+            string sql = "select " + field + " from Categories where ID==" + ID;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read()){temp = (bool)reader[field];}
+            while (reader.Read())
+            {
+                erg = (bool)reader[field];
+            }
             reader.Close();
             dc();
-            return temp;
+            return erg;
         }
-        public Boolean gotChild(int ID) {return getStackBool(ID, "gotChild");}
-        public Boolean gotCards(int ID) { return getStackBool(ID, "gotCards"); }
-   
+        public bool getStackBool(string sql, string field)
+        {
+            connect();
+            bool erg = false;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                erg = (bool)reader[field];
+            }
+            reader.Close();
+            dc();
+            return erg;
+        }
+        public bool gotCards(string stackName) { return getStackBool("select gotCards from Categories where StackName= ", stackName); }
+
+        public bool getChild(string stackName) { return getStackBool("select gotChild from Categories where StackName= ",stackName); }
+        public bool gotChild(int ID){return getStackBool(ID, "gotChild");}
+        public bool gotCards(int ID){return getStackBool(ID, "gotCards");}
+
+
 
         //getter string
-        public string getStackStringFromCategories(int ID,string field)
+        public String getStackString(int ID, string field)
         {
             connect();
             string erg = "";
@@ -54,48 +73,27 @@ namespace learningProggy
             dc();
             return erg;
         }
-        public string getCategoryName(int ID) { return getStackStringFromCategories(ID, "stackName"); }
+        public string getQuestion(int ID) {return getStackString(ID, "Question");}
+        public string getAnswer(int ID) {return getStackString(ID, "Answer");}
+        public string getStackName(int ID) {return getStackString(ID, "StackName");}
 
-
-
-        public string getCardString(int ID, string field)
+        //getter numeric
+        public int getStackInt(int ID,string field)
         {
+            int erg = 0;
+            string sql = "select "+field+" from Cards where ID==" + ID;
             connect();
-            string erg = "";
-            string sql = "select " + field + " from Cards where ID==" + ID;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read()) { erg = (string)reader[field]; }
+            while (reader.Read()) { var temp = Convert.ChangeType(reader[field], typeof(int)) as int?;erg = (int)temp;}
             reader.Close();
             dc();
             return erg;
         }
-        public string getQuestion(int ID) { return getCardString(ID, "Question"); }
-        public string getAnswer(int ID) { return getCardString(ID, "Answer"); }
-        public string getStackNameFromCards(int ID) { return getCardString(ID, "stackName"); }
-        
-
-
-
-        //getter numeric
-        public int getIntFromCards(int ID,string field)
-        {
-                int erg = 0;
-                string sql = "select "+field+" from Cards where ID==" + ID;
-                connect();
-                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-                SQLiteDataReader reader = command.ExecuteReader();
-                while (reader.Read()){var temp = Convert.ChangeType(reader[field], typeof(int)) as int?; erg = (int)temp;}
-                reader.Close();
-                dc();
-                return erg;
-        }
-        public int getCorrect(int ID) { return getIntFromCards(ID, "Correkt"); }
-        public int getWrong(int ID) { return getIntFromCards(ID, "Wrong"); }
-        public int getPriority(int ID) { return getIntFromCards(ID, "Priority"); }
-        public int getParentID(int ID) { return getIntFromCards(ID, "parentID"); }
-
-
+        public int getCorrect(int ID){return getStackInt(ID, "Correkt");}
+        public int getWrong(int ID){return getStackInt(ID, "Correkt");}
+        public int getPriority(int ID){return getStackInt(ID, "Priority");}
+        public int getParentId(int ID){return getStackInt(ID, "parentID");}
 
         public long getLong(string sql, string erg)
         {
@@ -105,65 +103,94 @@ namespace learningProggy
             while (reader.Read())
             {
                 var temp = Convert.ChangeType(reader[erg], typeof(long)) as long?;
-                reader.Close(); dc(); return (long)temp;
+                reader.Close();
+                dc();
+                return (long)temp;
             }
-            reader.Close(); dc(); return 325;
+                reader.Close();
+                dc();
+                return 325;
         }
+
 
 
         //getter DateTime
-        public TimeSpan getTimeSpanFromCards(int ID,string field)
+
+        public TimeSpan getTimeSpan(int ID,string field)
         {
-            TimeSpan dur = new TimeSpan();
-            long ts = 0;
-            connect();
+            TimeSpan dur;
             string sql = "select "+field+" from Cards where ID=" + ID;
-            ts = getLong(sql, field);
-            dur = new TimeSpan(ts);
-            return dur;
-        }
-        public TimeSpan getDuration(int ID) { return getTimeSpanFromCards(ID, "Duration"); }
-
-
-        public DateTime getDateTime(string sql, string field)
-        {
-            connect();
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
-            long dt = getLong(sql, "lastView");
-            DateTime dtx = new DateTime(dt);
-            reader.Close();
-            dc();
-            return dtx;
-        }
-        public DateTime get_StackLastView(int ID){ return getDateTime("select lastView from Categories where ID="+ID,"lastView"); }
-        public DateTime get_CorrectTime(int ID) { return getDateTime("select correctTime from Cards where ID=" + ID, "correctTime"); }
-        public DateTime get_WrongTime(int ID) { return getDateTime("select WrongTime from Cards where ID=" + ID, "WrongTime"); }
-        public DateTime get_CardCreationTime(int ID) { return getDateTime("select creationTime from Cards where ID=" + ID, "creationTime"); }
-
-
-
-
-        // getter lists
-        public List<int> getIntList(string sql,string field)
-        {
-            List<int> list = new List<int>();
+            long dauer = 0;
             connect();
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
                 var temp = Convert.ChangeType(reader[field], typeof(int)) as int?;
-                list.Add((int)temp);
+                dauer = (long)temp;
+            }
+            dur = new TimeSpan(dauer);
+            reader.Close();
+            dc();
+            return dur;
+        }
+        public TimeSpan getDuration(int ID) {return getTimeSpan(ID, "Duration");}
+
+
+        public DateTime getStackDateTime(int id,string field)
+        {
+            connect();
+            string sql = "select "+field+" from Categories where ID=" + ID;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            long dt = getLong(sql, field);
+            DateTime dtx = new DateTime(dt);
+            reader.Close();
+            dc();
+            return dtx;
+        }
+        public DateTime getStackLastView(int ID) { return getStackDateTime(ID, "lastView"); }
+        public DateTime get_CorrectTime(int ID){return getStackDateTime(ID, "correctTime"); }
+        public DateTime get_wrongTime(int ID){ return getStackDateTime(ID, "wrongTime"); }
+        public DateTime get_CardCreationTime(int ID) { return getStackDateTime(ID, "creationTime"); }
+
+
+        
+        // getter lists
+        public List<int> getStackIntList(string sql, string field)
+        {
+            List<int> stackIds = new List<int>();
+            connect();
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var temp = Convert.ChangeType(reader["field"], typeof(int)) as int?;
+                stackIds.Add((int)temp);
             }
             reader.Close();
             dc();
-            return list;
+            return stackIds;
         }
-        public List<int> getAllStackIds(){return getIntList("select ID from Categories", "ID");}
-        public List<int> getChildStackIds(int ID) { return getIntList("select ID from Categories where parentID==" + ID, "ID"); }
-        public List<int> get_CardStack(int ID) { return getIntList("select ID from Cards where stackID=" + ID, "ID"); }
+        public List<int> getAllStackIds(){return getStackIntList("select ID from Categories", "ID");}
+        public List<int> getChildStackIds(int ID) { return getStackIntList("select ID from Categories where parentID==", "ID"); }
+        public List<int> get_CardStack(int ID)
+        {
+            List<int> cardIDs = new List<int>();
+            connect();
+            string sql = "select ID from Cards where stackID=" + ID;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var temp = Convert.ChangeType(reader["ID"], typeof(int)) as int?;
+                cardIDs.Add((int)temp);
+            }
+            reader.Close();
 
+            dc();
+            return cardIDs;
+        }
 
         //counter 
         public int countStackCards(int ID)
@@ -211,13 +238,13 @@ namespace learningProggy
             return max;
         }
 
-        public int countChildStackPrioCards(List<int> childIDList)
+        public int countChildStackPrioCards(List<int> childIdList)
         {
             int max = 0;
             connect();
-            for (int i = 0; i < childIDList.Count(); i++)
+            for (int i = 0; i < childIdList.Count(); i++)
             {
-                max += countStackPrioCards(childIDList[i]);
+                max += countStackPrioCards(childIdList[i]);
             }
             return max;
         }

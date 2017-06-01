@@ -9,11 +9,10 @@ namespace learningProggy
 
     class Stack                              // : List<Karte>
     {
-
         public static sqlte_connector sc = new sqlte_connector();
 
         public int iD;
-            private int parentID;
+        public int parentID;
         public string stackName;
         public bool gotChild;
         public bool gotParent;
@@ -21,8 +20,7 @@ namespace learningProggy
 
         public DateTime lastView;
         public List<Card> card;
-
-
+        
         public Stack parent;
         public List<int> childIdList;
         public Stack()
@@ -42,21 +40,7 @@ namespace learningProggy
             if (this.parentID > 0) this.gotParent = true;
             this.childIdList = new List<int>(sc.getChildStackIds(0));
         }
-/*
-        public Stack(int iD, int parentID, string stackName, bool gotChild, bool gotParent, bool gotCards, DateTime lastView, Stack parent, Stack child)
-        {
-            this.iD = iD;
-            this.parentID = 0;
-            this.childIdList = new List<int>();
-            this.stackName = stackName;
-            this.gotChild = gotChild;
-            this.gotParent = gotParent;
-            this.gotCards = gotCards;
-            this.lastView = lastView;
-            this.parent = new Stack();
-            this.childIdList = new List<int>();
-        }
-        */
+
         public Stack createRoot()
         {
             Stack st = new Stack();
@@ -80,7 +64,7 @@ namespace learningProggy
                 Stack st = new Stack();
                 st.iD = list[i];
                 st.parentID = sc.getParentId(list[i]);
-                st.stackName = sc.getCategoryName(list[i]);
+                st.stackName = getCategoryName(list[i]);
                 st.gotChild = sc.gotChild(list[i]);
                 st.gotCards = sc.gotCards(list[i]);
                 st.lastView = sc.get_StackLastView(list[i]);
@@ -92,16 +76,18 @@ namespace learningProggy
 
             return erg;
         }
+        public string getCategoryName(int ID)
+        {
+            return sc.getStackString(ID, "stackName");
+        }
 
         public int getQuantityOfChildCards()
         {
-
             return 5;
         }
 
         private List<Stack> getChildIDs(int ID = 0)
         {
-
             return new List<Stack>();
         }
   
