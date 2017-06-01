@@ -32,13 +32,11 @@ namespace learningProggy
             List<int> StackIDs = new List<int>(sc.getAllStackIds());
             ComboBoxItem cbi = new ComboBoxItem();
             combo.Items.Clear();
-            
             for (int i = 0; i < StackIDs.Count(); i++)
             {
                 if (!sc.gotCards(StackIDs[i]))
                 {
                     combo.Items.Add(sk.getCategoryName(StackIDs[i]));
-
                 }
             }
             sqlte_connector.dc();
@@ -50,31 +48,30 @@ namespace learningProggy
             if (sc.gotCards(Kategorie.Text))
             {
                 string kategorie = Kategorie.Text;
-                bool hatUeber = false;
-                bool hatUnter = false;
+                bool gotParent = false;
+                bool gotChild = false;
 
-                int ueberID = 0;
+                int parentID = 0;
 
 
                 if ((string)combo.SelectedItem == null)
                 {
-                    hatUeber = false;       // neuer stapel
+                    gotParent = false;       // neuer stapel
                 }
                 else
                 {
-                    hatUnter = true;        // mutterstapel
-                    hatUeber = true;        // neuer stapel
-                    ueberID = sc.getParentId((string)combo.SelectedItem)[0];
+                    gotChild = true;        // mutterstapel
+                    gotParent = true;        // neuer stapel
+                    parentID = sc.getParentId(sc.getStackIntbyName((string)combo.SelectedItem,"ID"));
                 }
 
                 try
                 {
-
-                    if (hatUnter)
+                    if (gotChild)
                     {
-                        sc.setHatUnter(ueberID);
+                        sc.setgotChild(parentID);
                     }
-                    sc.ErstelleKategorie(kategorie, ueberID, hatUeber);
+                    sc.ErstelleKategorie(kategorie, parentID, gotParent);
 
                     message_lbl.Content = "Die Kategorie " + Kategorie.Text + " wurde erfolgreich hinzugefügt!";
                 }
