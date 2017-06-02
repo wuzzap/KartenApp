@@ -11,7 +11,7 @@ namespace learningProggy
     class sqlte_connector
     { 
 
-        public static string SQL_COMMAND_XY = "select gotCards from Categories where StackName=";
+        public static string SQL_COMMAND_XY = "select gotCards from Stacks where StackName=";
 
         //basics
         public static SQLiteConnection m_dbConnection;
@@ -29,7 +29,7 @@ namespace learningProggy
         {
             connect();
             bool erg = false;
-            string sql = "select " + field + " from Categories where ID==" + ID;
+            string sql = "select " + field + " from Stacks where ID==" + ID;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read()) { erg = (bool)reader[field]; }
@@ -51,8 +51,8 @@ namespace learningProggy
             dc();
             return erg;
         }
-        public bool gotCards(string stackName) { return getStackBool("select gotCards from Categories where StackName= ", stackName); }
-        public bool getChild(string stackName) { return getStackBool("select gotChild from Categories where StackName= ", stackName); }
+        public bool gotCards(string stackName) { return getStackBool("select gotCards from Stacks where StackName= ", stackName); }
+        public bool getChild(string stackName) { return getStackBool("select gotChild from Stacks where StackName= ", stackName); }
         public bool gotChild(int ID) { return getStackBool(ID, "gotChild"); }
         public bool gotCards(int ID) { return getStackBool(ID, "gotCards"); }
 
@@ -63,7 +63,7 @@ namespace learningProggy
         {
             connect();
             string erg = "";
-            string sql = "select " + field + " from Categories where ID==" + ID;
+            string sql = "select " + field + " from Stacks where ID==" + ID;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read()) { erg = (string)reader[field]; }
@@ -79,7 +79,7 @@ namespace learningProggy
         public int getStackIntbyID(int ID, string field)
         {
             int erg = 0;
-            string sql = "select " + field + " from Categories where ID==" + ID;
+            string sql = "select " + field + " from Stacks where ID==" + ID;
             connect();
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
@@ -97,7 +97,7 @@ namespace learningProggy
         public int getStackIntbyName(string StackName, string field)
         {
             int erg = 0;
-            string sql = "select " + field + " from Categories where StackName==" + StackName;
+            string sql = "select " + field + " from Stacks where StackName==" + StackName;
             connect();
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
@@ -149,10 +149,10 @@ namespace learningProggy
             public TimeSpan getDuration(int ID) { return getTimeSpan(ID, "Duration"); }
 
 
-        public DateTime getStackDateTime(int id, string field)
+        public DateTime getStackDateTime(int ID, string field)
         {
             connect();
-            string sql = "select " + field + " from Categories where ID=" + ID;
+            string sql = "select " + field + " from Stacks where ID=" + ID;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             long dt = getLong(sql, field);
@@ -161,10 +161,10 @@ namespace learningProggy
             dc();
             return dtx;
         }
-            public DateTime getStackLastView(int ID) { return getStackDateTime(ID, "lastView"); }
-            public DateTime get_CorrectTime(int ID) { return getStackDateTime(ID, "correctTime"); }
-            public DateTime get_wrongTime(int ID) { return getStackDateTime(ID, "wrongTime"); }
-            public DateTime get_CardCreationTime(int ID) { return getStackDateTime(ID, "creationTime"); }
+        public DateTime getStackLastView(int ID) { return getStackDateTime(ID, "lastView"); }
+        public DateTime get_CorrectTime(int ID) { return getStackDateTime(ID, "correctTime"); }
+        public DateTime get_wrongTime(int ID) { return getStackDateTime(ID, "wrongTime"); }
+        public DateTime get_CardCreationTime(int ID) { return getStackDateTime(ID, "creationTime"); }
 
 
 
@@ -184,8 +184,8 @@ namespace learningProggy
             dc();
             return stackIds;
         }
-        public List<int> getAllStackIds() { return getStackIntList("select ID from Categories", "ID"); }
-        public List<int> getChildStackIds(int ID) { return getStackIntList("select ID from Categories where parentID==", "ID"); }
+        public List<int> getAllStackIds() { return getStackIntList("select ID from Stacks", "ID"); }
+        public List<int> getChildStackIds(int ID) { return getStackIntList("select ID from Stacks where parentID==", "ID"); }
         public List<int> get_CardStack(int ID)
         {
             List<int> cardIDs = new List<int>();
@@ -296,26 +296,22 @@ namespace learningProggy
              public void changeCorrectTime(int ID) { changeCardTime(ID, "correctTime"); }
              public void changeWrongTime(int ID) { changeCardTime(ID, "wrongTime"); }
 
+
+
         public void set_Bool(int ID,string field,bool bl, string table)
         {
             connect();
             DateTime dtc = DateTime.Now;
             long dtx = dtc.Ticks;
-
             string sql = "UPDATE "+table+" set " + field + "= "+ bl+" WHERE ID == " + ID;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
             dc();
         }
-            public void setCardBool(int ID,string field, bool bl) { changeBool(ID,field,bl,"Card"); }
-                public void set_gotChild(int ID)
-                {
-                    setCardBool(int ID,)
-                }
+        public void setCardBool(int ID,string field, bool bl) { set_Bool(ID,field,bl,"Card"); }
+        public void set_gotChild(int ID,bool bl) { setCardBool(ID, "gotChild", bl); }
        
-
-
-            public void changStackBool(int ID, string field, bool bl){ changeBool(ID, field, bl, "Category"); }
+        public void changStackBool(int ID, string field, bool bl){ set_Bool(ID, field, bl, "Category"); }
 
         /*  public void changeCorrectTime(int ID)
           {
@@ -344,5 +340,14 @@ namespace learningProggy
       */
 
 
+        public void addNewStack(string stack, int parentID, bool gotParent)
+        {
+            connect();
+            string erg = "";
+            string sql = "INSERT INTO Stacks(StackName,parentID, gotParent,time) VALUES('" + stack + "','" + parentID + "', '" + gotParent + "','" + DateTime.Now.Ticks + "')";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+            dc();
+        }
     }
 }

@@ -14,9 +14,7 @@ using System.Windows.Shapes;
 
 namespace learningProggy
 {
-    /// <summary>
-    /// Interaktionslogik für NewCategory.xaml
-    /// </summary>
+
     public partial class NewCategory : Window
     {
         static sqlte_connector sc = new sqlte_connector();
@@ -36,7 +34,7 @@ namespace learningProggy
             {
                 if (!sc.gotCards(StackIDs[i]))
                 {
-                    combo.Items.Add(sk.getCategoryName(StackIDs[i]));
+                    combo.Items.Add(sc.getStackName(StackIDs[i]));
                 }
             }
             sqlte_connector.dc();
@@ -45,9 +43,9 @@ namespace learningProggy
         private void Button_Click_Add(object sender, RoutedEventArgs e)
         {
 
-            if (sc.gotCards(Kategorie.Text))
+            if (sc.gotCards(StackName_Box.Text))
             {
-                string kategorie = Kategorie.Text;
+                string Stack = StackName_Box.Text;
                 bool gotParent = false;
                 bool gotChild = false;
 
@@ -69,20 +67,20 @@ namespace learningProggy
                 {
                     if (gotChild)
                     {
-                        sc.setgotChild(parentID);
+                        sc.set_gotChild(parentID,true);
                     }
-                    sc.ErstelleKategorie(kategorie, parentID, gotParent);
+                    sc.addNewStack(Stack, parentID, gotParent);
 
-                    message_lbl.Content = "Die Kategorie " + Kategorie.Text + " wurde erfolgreich hinzugefügt!";
+                    message_lbl.Content = "Die Stack " + StackName_Box.Text + " wurde erfolgreich hinzugefügt!";
                 }
                 catch
                 {
-                    message_lbl.Content = "Sorry konnte die Kategorie " + Kategorie.Text + " nicht hinzufügen :(";
+                    message_lbl.Content = "Sorry konnte die Stack " + StackName_Box.Text + " nicht hinzufügen :(";
                 }
             }
             else
             {
-                message_lbl.Content = "Die Kategorie " + Kategorie.Text + " ist schon vorhanden";
+                message_lbl.Content = "Die Stack " + StackName_Box.Text + " ist schon vorhanden";
             }
 
             updateView();

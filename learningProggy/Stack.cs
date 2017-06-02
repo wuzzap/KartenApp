@@ -32,10 +32,10 @@ namespace learningProggy
         {
             this.iD = ID;
             this.parentID = sc.getParentId(ID);
-            this.stackName = sc.getCategoryName(ID);
+            this.stackName = sc.getStackString(ID, "StackName");
             this.gotChild = sc.gotChild(ID);
             this.gotCards = sc.gotCards(ID);
-            this.lastView = sc.get_StackLastView(ID);
+            this.lastView = sc.getStackLastView(ID);
             this.gotParent = false;
             if (this.parentID > 0) this.gotParent = true;
             this.childIdList = new List<int>(sc.getChildStackIds(0));
@@ -64,10 +64,10 @@ namespace learningProggy
                 Stack st = new Stack();
                 st.iD = list[i];
                 st.parentID = sc.getParentId(list[i]);
-                st.stackName = getCategoryName(list[i]);
+                st.stackName = sc.getStackName(list[i]);
                 st.gotChild = sc.gotChild(list[i]);
                 st.gotCards = sc.gotCards(list[i]);
-                st.lastView = sc.get_StackLastView(list[i]);
+                st.lastView = sc.getStackLastView(list[i]);
                 st.gotParent = false;
                 if (st.parentID > 0) st.gotParent = true;
                 st.childIdList = new List<int>(sc.getChildStackIds(0));
@@ -76,20 +76,8 @@ namespace learningProggy
 
             return erg;
         }
-        public string getCategoryName(int ID)
-        {
-            return sc.getStackString(ID, "stackName");
-        }
 
-        public int getQuantityOfChildCards()
-        {
-            return 5;
-        }
 
-        private List<Stack> getChildIDs(int ID = 0)
-        {
-            return new List<Stack>();
-        }
   
     }
 }
