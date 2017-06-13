@@ -6,23 +6,21 @@ using System.Threading.Tasks;
 
 namespace learningProggy
 {
-
-    class Stack                              // : List<Karte>
+    public class Stack                              // : List<Karte>
     {
-        public static sqlte_connector sc = new sqlte_connector();
-
+       static sqlte_connector sc = new sqlte_connector();
+        static Card card = new Card();
+        // todo private umwandlung ( public int x { get; }; )
         public int iD;
         public int parentID;
         public string stackName;
         public bool gotChild;
         public bool gotParent;
         public bool gotCards;
-
         public DateTime lastView;
-        public List<Card> card;
-        
-        public Stack parent;
-        public List<int> childIdList;
+       public List<int> childIdList;
+        public List<Stack> childStackList;
+        public List<Card> cards;
         public Stack()
         {
             
@@ -31,53 +29,38 @@ namespace learningProggy
         public Stack(int ID)
         {
             this.iD = ID;
-            this.parentID = sc.getParentId(ID);
-            this.stackName = sc.getStackString(ID, "StackName");
-            this.gotChild = sc.gotChild(ID);
-            this.gotCards = sc.gotCards(ID);
-            this.lastView = sc.getStackLastView(ID);
+            this.parentID = sc.get_int_parentID(ID);
+            this.stackName = sc.get_string_stackName_stacks(ID);
+            this.gotChild = sc.get_bool_gotChild(ID);
+            this.gotCards = sc.get_bool_gotCards(ID);
+            this.lastView = sc.get_DateTime_stackLastView(ID);
             this.gotParent = false;
             if (this.parentID > 0) this.gotParent = true;
-            this.childIdList = new List<int>(sc.getChildStackIds(0));
+            else this.gotParent = false;
+            this.childIdList = new List<int>(sc.get_list_childStackIds(ID));
+            this.childStackList = new List <Stack> (createStacks(sc.get_list_childStackIds(ID)));
+            this.cards = card.createCards(sc.get_list_cardsOnStackIDs(ID));
         }
-
-        public Stack createRoot()
-        {
-            Stack st = new Stack();
-            this.iD = 0;
-            st.parentID = 0;
-            st.stackName = "Root";
-            st.gotChild = true;
-            st.gotParent = false;
-            st.gotCards = false;
-            st.lastView = new DateTime();
-            st.parentID = 0;
-            st.childIdList = new List<int>(sc.getChildStackIds(0));
-            return st;
-        }
-
+        
         public List<Stack> createStacks(List<int> list)
         {
             List<Stack> erg = new List<Stack>();
             for(int i = 0; i < list.Count; i++)
             {
-                Stack st = new Stack();
-                st.iD = list[i];
-                st.parentID = sc.getParentId(list[i]);
-                st.stackName = sc.getStackName(list[i]);
-                st.gotChild = sc.gotChild(list[i]);
-                st.gotCards = sc.gotCards(list[i]);
-                st.lastView = sc.getStackLastView(list[i]);
-                st.gotParent = false;
-                if (st.parentID > 0) st.gotParent = true;
-                st.childIdList = new List<int>(sc.getChildStackIds(0));
+                Stack st = new Stack(list[i]);
                 erg.Add(st);
             }
-
             return erg;
+        }
+                 
+        public List<Stack> createAllStacks()
+        {
+            List<int> allStackIDs = new List<int>();
+            List<Stack> allStacks = new List<Stack>(createStacks(sc.get_list_allStackIds()));
+            return allStacks;
         }
 
 
-  
+
     }
 }

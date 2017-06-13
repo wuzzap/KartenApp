@@ -23,18 +23,19 @@ namespace learningProggy
         {
             InitializeComponent();
             updateView();
+            parentStack_Combo.Text = "Root";
         }
 
         private void updateView()
         {
-            List<int> StackIDs = new List<int>(sc.getAllStackIds());
+            List<int> StackIDs = new List<int>(sc.get_list_allStackIds());
             ComboBoxItem cbi = new ComboBoxItem();
-            combo.Items.Clear();
+            parentStack_Combo.Items.Clear();
             for (int i = 0; i < StackIDs.Count(); i++)
             {
-                if (!sc.gotCards(StackIDs[i]))
+                if (!sc.get_bool_gotCards(StackIDs[i]))
                 {
-                    combo.Items.Add(sc.getStackName(StackIDs[i]));
+                    parentStack_Combo.Items.Add(sc.get_string_stackName_stacks(StackIDs[i]));
                 }
             }
             sqlte_connector.dc();
@@ -42,47 +43,46 @@ namespace learningProggy
 
         private void Button_Click_Add(object sender, RoutedEventArgs e)
         {
-
-            if (sc.gotCards(StackName_Box.Text))
+            if (!sc.get_bool_gotCards(parentStack_Combo.Text))
             {
                 string Stack = StackName_Box.Text;
-                bool gotParent = false;
-                bool gotChild = false;
-
+                //bool gotParent = false;
                 int parentID = 0;
 
-
-                if ((string)combo.SelectedItem == null)
+                if (parentStack_Combo.SelectedItem == null)
                 {
-                    gotParent = false;       // neuer stapel
+                    parentID = 0;      
                 }
                 else
                 {
-                    gotChild = true;        // mutterstapel
-                    gotParent = true;        // neuer stapel
-                    parentID = sc.getParentId(sc.getStackIntbyName((string)combo.SelectedItem,"ID"));
+                    //gotParent = true; 
+                    int y= sc.get_int_ID_Stack((string)parentStack_Combo.SelectedItem);
+                    parentID = y;
                 }
 
                 try
                 {
-                    if (gotChild)
+                    if (parentID>0)
                     {
-                        sc.set_gotChild(parentID,true);
+                        sc.set_bool_gotChild(parentID,true);
                     }
-                    sc.addNewStack(Stack, parentID, gotParent);
+                    sc.add_NewStack(Stack, parentID);
 
-                    message_lbl.Content = "Die Stack " + StackName_Box.Text + " wurde erfolgreich hinzugefügt!";
+                    message_lbl.Content = "Der Stapel " + StackName_Box.Text + " wurde erfolgreich hinzugefügt!";
                 }
                 catch
                 {
-                    message_lbl.Content = "Sorry konnte die Stack " + StackName_Box.Text + " nicht hinzufügen :(";
+                    message_lbl.Content = "Konnte den Stapel " + StackName_Box.Text + " nicht hinzufügen :(";
+                    // todo: sql report ziehen
                 }
             }
             else
             {
-                message_lbl.Content = "Die Stack " + StackName_Box.Text + " ist schon vorhanden";
-            }
+                message_lbl.Content = "Die Kategorie " + StackName_Box.Text + " besitzt bereits Karten!";
+                // todo verschieben anbieten
 
+
+            }
             updateView();
         }
 

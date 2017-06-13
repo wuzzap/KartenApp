@@ -72,6 +72,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddCards.xaml.cs">
+      <DependentUpon>AddCards.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Card.cs" />
     <Compile Include="CardView.xaml.cs">
       <DependentUpon>CardView.xaml</DependentUpon>
@@ -84,6 +87,10 @@
     </Compile>
     <Compile Include="sqlte_connector.cs" />
     <Compile Include="Stack.cs" />
+    <Page Include="AddCards.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

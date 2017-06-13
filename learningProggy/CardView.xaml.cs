@@ -33,8 +33,9 @@ namespace learningProggy
         DispatcherTimer _timer;
         TimeSpan _time;
 
-        public CardView(List<Card> card)
-        {   
+        public CardView(List<Card> cardx)
+        {
+            card = new List<Card>(cardx);
             this.index = 0;
             this.DataContext = card[this.index];
             InitializeComponent();
@@ -55,7 +56,7 @@ namespace learningProggy
 
         private void updateView(int index)
         {
-            Zuletztrichtig.Content = "Zuletzt : " + card[index].correctTime;
+            Zuletztrichtig.Content = "Zuletzt : " + card[this.index].correctTime;
             Zuletztfalsch.Content = "Zuletzt : " + card[index].wrongTime;
             _time = TimeSpan.Zero;
             erg.Content = card[index].question;
@@ -71,12 +72,12 @@ namespace learningProggy
 
         private void updateDB(int index)
         {
-            if (changePriority) sc.changeIntVars("Priority", card[index].priority, card[index].ID);
-            if (changeCorrect) sc.changeIntVars("Correkt", card[index].correct, card[index].ID);
-            if (changeWrong) sc.changeIntVars("Wrong", card[index].wrong, card[index].ID);
-            if (changeDuration) sc.changeDuration(card[index].ID, card[index].duration.Ticks);
-            if (changeCorrectTime == true) sc.changeCorrectTime(card[index].ID);
-            if (changeWrongTime == true) sc.changeWrongTime(card[index].ID);
+            if (changePriority) sc.set_int_priority(card[index].priority, card[index].ID);
+            if (changeCorrect) sc.set_int_correct(card[index].correct, card[index].ID);
+            if (changeWrong) sc.set_int_wrong(card[index].wrong, card[index].ID);
+            if (changeDuration) sc.set_duration(card[index].ID, card[index].duration.Ticks);
+            if (changeCorrectTime == true) sc.set_dateTime_correctTime(card[index].ID);
+            if (changeWrongTime == true) sc.set_dateTime_wrongTime(card[index].ID);
             changeWrong = false;
             changeCorrect = false;
             changePriority = false;

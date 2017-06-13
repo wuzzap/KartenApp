@@ -42,16 +42,16 @@ namespace learningProggy
         public Card(int ID)
         {
             this.ID = ID;
-            this.question = sc.getQuestion(ID);
-            this.answer = sc.getAnswer(ID);
-            this.correct = sc.getCorrect(ID);
-            this.wrong = sc.getWrong(ID);
-            this.priority = sc.getPriority(ID);
-            this.stackName = sc.getStackName(ID);
-            this.correctTime = sc.get_CorrectTime(ID);
-            this.wrongTime = sc.get_wrongTime(ID);
-            this.creationTime = sc.get_CardCreationTime(ID);
-            this.duration = sc.getDuration(ID);
+            this.question = sc.get_string_question(ID);
+            this.answer = sc.get_string_answer(ID);
+            this.correct = sc.get_int_correct(ID);
+            this.wrong = sc.get_int_wrong(ID);
+            this.priority = sc.get_int_priority(ID);
+            this.stackName = sc.get_string_stackName_cards(ID);
+            this.correctTime = sc.get_DateTime_correctTime(ID);
+            this.wrongTime = sc.get_DateTime_wrongTime(ID);
+            this.creationTime = sc.get_DateTime_cardCreationTime(ID);
+            this.duration = sc.get_Duration(ID);
         }
 
         public Card(int ID, string question, string answer, int correct, int wrong, int priority, string stackName, DateTime correctTime, DateTime wrongTime, DateTime creationTime, TimeSpan duration)
@@ -69,14 +69,14 @@ namespace learningProggy
             this.duration = duration;
         }
 
-        public static List<Card> createCards(List<int> list)
+        public List<Card> createCards(List<int> list)
         {
             List<Card> cards = new List<Card>();
 
             for(int i = 0; i < list.Count; i++)
             {
-                Card card = new Card(list[i]);
-                cards.Add(card);
+                Card cardx = new Card(list[i]);
+                cards.Add(cardx);
             }
             return cards;
         }
