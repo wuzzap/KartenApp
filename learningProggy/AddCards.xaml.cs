@@ -12,6 +12,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
+using System.Data.SQLite;
+using System.Data.SQLite.EF6;
+using System.Data.SQLite.Linq;
+
+
+
 namespace learningProggy
 {
     /// <summary>
@@ -40,7 +47,8 @@ namespace learningProggy
         
         private void Button_Click_Add(object sender, RoutedEventArgs e)
         {
-            addNewCard();
+            if (Stack_Combo.Text !="") { addNewCard(); }
+            else { msg.Text = "Bitte einen Stapel auswählen"; }
         }
 
         public void addNewCard()            // todo: überlegung;  komprimierung vs überblick
@@ -59,15 +67,22 @@ namespace learningProggy
             long tsx = duration.Ticks;
 
 
+
             try
             {
                 
                 sc.add_NewCard(stackName,stackID, priority, question, answer, correct, wrong, dtx, tsx);
+                msg.Text = "Die Karte wurde in "+ Stack_Combo.Text+" abgelegt";
+
             }
-            catch( Exception ex)
+            catch (SQLiteException ex)
+            {
+                msg.Text = ex.Message;
+            }
+           /* catch ( Exception ex)
             {
                 msg.Text = ex.ToString();
-            }
+            }*/
             }
 
         private void Button_Click_Close(object sender, RoutedEventArgs e)

@@ -236,7 +236,7 @@ namespace learningProggy
         {
             int max = 0;
             connect();
-            string sql = "select ID from Cards where StackID=" + ID + " AND Priority >5";
+            string sql = "select ID from Cards where StackID=" + ID + " AND priority >5";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())

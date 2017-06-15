@@ -19,14 +19,14 @@ namespace learningProggy
     {
         static sqlte_connector sc = new sqlte_connector();
         Stack sk = new Stack();
-        public NewCategory()
+        public NewCategory(int x=0)
         {
             InitializeComponent();
-            updateView();
-            parentStack_Combo.Text = "Root";
+            updateView(x);
+           
         }
 
-        private void updateView()
+        private void updateView(int x=0)
         {
             List<int> StackIDs = new List<int>(sc.get_list_allStackIds());
             ComboBoxItem cbi = new ComboBoxItem();
@@ -38,6 +38,7 @@ namespace learningProggy
                     parentStack_Combo.Items.Add(sc.get_string_stackName_stacks(StackIDs[i]));
                 }
             }
+            parentStack_Combo.Text = sc.get_string_stackName_stacks(StackIDs[x]);
             sqlte_connector.dc();
         }
 
@@ -70,9 +71,9 @@ namespace learningProggy
 
                     message_lbl.Content = "Der Stapel " + StackName_Box.Text + " wurde erfolgreich hinzugefügt!";
                 }
-                catch
+                catch(Exception ex)
                 {
-                    message_lbl.Content = "Konnte den Stapel " + StackName_Box.Text + " nicht hinzufügen :(";
+                    message_lbl.Content = ex;
                     // todo: sql report ziehen
                 }
             }

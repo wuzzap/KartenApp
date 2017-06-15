@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:learningProggy"
         mc:Ignorable="d"
-        Title="Karte hinzufügen" Height="650" Width="400">
-    <Grid Margin="0,0,2,-1">
-        <TextBox Name="Question_Box" HorizontalAlignment="Left" Height="95" Margin="125,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195" AcceptsReturn="True"/>
-        <TextBox Name="Answer_Box" HorizontalAlignment="Left" Height="95" Margin="125,140,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195" AcceptsReturn="True"/>
-        <Button Content="Add" HorizontalAlignment="Left" Margin="55,328,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Add"/>
-        <ComboBox Name="Stack_Combo" HorizontalAlignment="Left" Margin="125,250,0,0" VerticalAlignment="Top" Width="195"/>
-        <Label Content="Frage" HorizontalAlignment="Left" Margin="55,70,0,0" VerticalAlignment="Top"/>
-        <Label Content="Antwort" HorizontalAlignment="Left" Margin="55,194,0,0" VerticalAlignment="Top"/>
-        <Button Content="Close" HorizontalAlignment="Left" Margin="245,328,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_Close"/>
-        <Label Content="Kategorie" HorizontalAlignment="Left" Margin="56,246,0,0" VerticalAlignment="Top" Width="64"/>
-        <TextBlock Name="msg" HorizontalAlignment="Left" Margin="125,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="195"/>
+        Title="Karte hinzufügen" Height="613.524" Width="382.589">
+    <Grid Margin="0,0,2,165">
+        <TextBox Name="Question_Box" HorizontalAlignment="Left" Height="105" Margin="125,44,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195" AcceptsReturn="True"/>
+        <TextBox Name="Answer_Box" HorizontalAlignment="Left" Height="105" Margin="125,178,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195" AcceptsReturn="True"/>
+        <Button Content="Add" HorizontalAlignment="Left" Margin="56,425,0,-40" VerticalAlignment="Top" Width="75" Click="Button_Click_Add" RenderTransformOrigin="0.477,2.366"/>
+        <ComboBox Name="Stack_Combo" HorizontalAlignment="Left" Margin="125,339,0,0" VerticalAlignment="Top" Width="195"/>
+        <Label Content="Frage" HorizontalAlignment="Left" Margin="41,84,0,0" VerticalAlignment="Top"/>
+        <Label Content="Antwort" HorizontalAlignment="Left" Margin="41,215,0,0" VerticalAlignment="Top"/>
+        <Button Content="Close" HorizontalAlignment="Left" Margin="244,425,0,-40" VerticalAlignment="Top" Width="75" Click="Button_Click_Close"/>
+        <Label Content="Kategorie" HorizontalAlignment="Left" Margin="55,335,0,0" VerticalAlignment="Top" Width="64"/>
+        <TextBlock Name="msg" HorizontalAlignment="Left" Margin="56,479,0,-114" TextWrapping="Wrap" VerticalAlignment="Top" Height="42" Width="264"/>
 
     </Grid>
 </Window>
