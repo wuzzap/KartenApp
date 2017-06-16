@@ -29,6 +29,7 @@ namespace learningProggy
         static sqlte_connector sc = new sqlte_connector();
         Stack st = new Stack();
         static List<Stack> stacks = new List<Stack>();
+
         public AddCards()
         {
             InitializeComponent();
@@ -41,6 +42,21 @@ namespace learningProggy
                     Stack_Combo.Items.Add(stacks[i].stackName);
                 }
             }
+        }
+
+        public AddCards(string actStack)
+        {
+            InitializeComponent();
+            stacks = st.createStacks(sc.get_list_allStackIds());
+            ComboBoxItem cbi = new ComboBoxItem();
+            for (int i = 0; i < stacks.Count; i++)
+            {
+                if (!stacks[i].gotChild)
+                {
+                    Stack_Combo.Items.Add(stacks[i].stackName);
+                }
+            }
+            Stack_Combo.Text = actStack;
         }
 
 
@@ -65,9 +81,7 @@ namespace learningProggy
             TimeSpan duration = new TimeSpan(1);
             long dtx = dt.Ticks;
             long tsx = duration.Ticks;
-
-
-
+            
             try
             {
                 
@@ -83,7 +97,7 @@ namespace learningProggy
             {
                 msg.Text = ex.ToString();
             }*/
-            }
+        }
 
         private void Button_Click_Close(object sender, RoutedEventArgs e)
         {

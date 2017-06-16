@@ -21,6 +21,7 @@ namespace learningProggy
         static Card card = new Card();
         static List<Stack> stacks = new List<Stack>();
         public static List<Stack> allStacks = new List<Stack>();
+        static int posi = 0;
 
         
         public CategorieView()
@@ -44,7 +45,7 @@ namespace learningProggy
         }
         private void Window_Closed(object sender, EventArgs e)
         {
-            updateView();
+            updateView(posi);
         }
 
         private void Button_Click_NewCategoryBtn(object sender, RoutedEventArgs e)
@@ -161,6 +162,7 @@ namespace learningProggy
 
         private void openStack(int i)
         {
+            posi= i;
             List<Stack> temp = new List<Stack>(stacks);
             //int id = stacks[i].iD;
             sc.set_dateTime_lastView(stacks[i].iD);
@@ -174,7 +176,12 @@ namespace learningProggy
             {
                 List<Card> cards = card.createCards(sc.get_list_cardsOnStackIDs(temp[i].iD));
                 var wnd = new CardView(cards);
-                wnd.Show();
+
+                wnd.Closed += Window_Closed;
+                wnd.ShowDialog();
+
+
+                //wnd.Show();
             }
         }
 
