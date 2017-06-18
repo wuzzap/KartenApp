@@ -162,14 +162,16 @@ namespace learningProggy
 
         private void openStack(int i)
         {
-            posi= i;
             List<Stack> temp = new List<Stack>(stacks);
             //int id = stacks[i].iD;
             sc.set_dateTime_lastView(stacks[i].iD);
             //  Stack stack = new Stack(i);
-            stacks = st.createStacks(stacks[i].childIdList);
+
+
             if (temp[i].gotChild)
             {
+                posi = stacks[i].iD;
+                stacks = st.createStacks(stacks[i].childIdList);
                 showCategories(stacks);
             }
             if (temp[i].gotCards)
@@ -188,6 +190,11 @@ namespace learningProggy
         private void updateView(int i=0)
         {
             allStacks = st.createAllStacks();
+
+            for(int x = 0; x < allStacks.Count;x++)
+            {
+                if (allStacks[x].iD==i){ i = x;  }
+            }
             stacks = st.createStacks(allStacks[i].childIdList);
            // st = st.createRoot();
             showCategories(stacks);

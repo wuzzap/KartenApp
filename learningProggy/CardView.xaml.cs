@@ -28,7 +28,7 @@ namespace learningProggy
         bool changeCorrectTime = false;
         bool changeWrongTime = false;
         bool changeDuration = false;
-        int index;
+static int index;
         TimeSpan duration;
         DispatcherTimer _timer;
         TimeSpan _time;
@@ -36,27 +36,42 @@ namespace learningProggy
         public CardView(List<Card> cardx)
         {
             card = new List<Card>(cardx);
-            this.index = 0;
-            this.DataContext = card[this.index];
+            index = 0;
+            this.DataContext = card[index];
             InitializeComponent();
-            updateView(index);
-
+            updateView();
+            time_progress.Value = 0;
             InitializeComponent();
 
 
             // mit Hilfe von Olaf
+
+            startTimer();
+
+
+
+        }
+
+        private void startTimer()
+        {
+            time_progress.Foreground = new SolidColorBrush(Colors.Green);
             _time = TimeSpan.Zero;
             _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
             {
                 timer.Content = _time.ToString("c");
                 _time = _time.Add(TimeSpan.FromSeconds(+1));
+                time_progress.Value += 1;
+                if (time_progress.Value >= card[index].duration.TotalSeconds)
+                {
+                    time_progress.Foreground = new SolidColorBrush(Colors.Red);
+                }
             }, Application.Current.Dispatcher);
             _timer.Start();
         }
 
-        private void updateView(int index)
+        private void updateView()
         {
-            Zuletztrichtig.Content = "Zuletzt : " + card[this.index].correctTime;
+            Zuletztrichtig.Content = "Zuletzt : " + card[index].correctTime;
             Zuletztfalsch.Content = "Zuletzt : " + card[index].wrongTime;
             _time = TimeSpan.Zero;
             erg.Content = card[index].question;
@@ -67,14 +82,17 @@ namespace learningProggy
             Zaehler.Content = ((index + 1) + " / " + card.Count);
             Kategorie.Content = card[index].stackName;
             durationlbl.Content = card[index].duration;
-
+            time_progress.Minimum = 0;
+            time_progress.Maximum = card[index].duration.TotalSeconds;
+            time_progress.Value = 0;
+            durationlbl.BringIntoView();
         }
 
-        private void updateDB(int index)
+        private void updateDB()
         {
-            if (changePriority) sc.set_int_priority(card[index].priority, card[index].ID);
-            if (changeCorrect) sc.set_int_correct(card[index].correct, card[index].ID);
-            if (changeWrong) sc.set_int_wrong(card[index].wrong, card[index].ID);
+            if (changePriority) sc.set_int_priority(card[index].ID, card[index].priority);
+            if (changeCorrect) sc.set_int_correct(card[index].ID,card[index].correct);
+            if (changeWrong) sc.set_int_wrong(card[index].ID,card[index].wrong);
             if (changeDuration) sc.set_duration(card[index].ID, card[index].duration.Ticks);
             if (changeCorrectTime == true) sc.set_dateTime_correctTime(card[index].ID);
             if (changeWrongTime == true) sc.set_dateTime_wrongTime(card[index].ID);
@@ -87,7 +105,7 @@ namespace learningProggy
         }
 
 
-        private void Button_Click_Zeige_Antwort(object sender, RoutedEventArgs e)
+        private void Button_Click_Show_Answer(object sender, RoutedEventArgs e)
         {
             if (erg.Content == card[index].question)
             {
@@ -99,9 +117,14 @@ namespace learningProggy
             }
         }
 
-        private void Button_Click_Zurück(object sender, RoutedEventArgs e)
+        private void Button_Click_Back(object sender, RoutedEventArgs e)
         {
-            updateDB(index);
+            lastCard();
+        }
+
+        private void lastCard()
+        {
+            updateDB();
             if (index > 0)
             {
                 index -= 1;
@@ -110,13 +133,19 @@ namespace learningProggy
             {
                 index = card.Count() - 1;
             }
-            updateView(index);
-            updateDB(index);
+            updateView();
+            updateDB();
         }
 
-        private void Button_Click_Vor(object sender, RoutedEventArgs e)
+        private void Button_Click_Next(object sender, RoutedEventArgs e)
         {
-            updateDB(index);
+            nextCard();
+        }
+
+        public void nextCard()
+        {
+            updateDB();
+
             if (index < card.Count - 1)
             {
                 index += 1;
@@ -125,7 +154,7 @@ namespace learningProggy
             {
                 index = 0;
             }
-            updateView(index);
+            updateView();
         }
 
         private void Button_Click_Richtig(object sender, RoutedEventArgs e)
@@ -138,7 +167,8 @@ namespace learningProggy
             changePriority = true;
             changeCorrectTime = true;
             changeDuration = true;
-            updateView(index);
+            nextCard();
+
         }
 
         private void Button_Click_Wrong(object sender, RoutedEventArgs e)
@@ -152,21 +182,21 @@ namespace learningProggy
             changeWrongTime = true;
             changeDuration = true;
 
-            updateView(index);
+            nextCard();
         }
 
         private void ReducePriority_Click(object sender, RoutedEventArgs e)
         {
             card[index].priority -= 1;
             changePriority = true;
-            updateView(index);
+            updateView();
         }
 
         private void AddPriority_Click(object sender, RoutedEventArgs e)
         {
             card[index].priority += 1;
             changePriority = true;
-            updateView(index);
+            updateView();
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
@@ -177,13 +207,18 @@ namespace learningProggy
             changeCorrect = true;
             changeCorrectTime = true;
             changeWrongTime = true;
-            updateView(index);
+            updateView();
         }
 
-        private void Schließen_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_Close(object sender, RoutedEventArgs e)
         {
-            updateDB(index);
+            updateDB();
             this.Close();
+        }
+
+        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
         }
     }
 }

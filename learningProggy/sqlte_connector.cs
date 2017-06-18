@@ -14,7 +14,7 @@ namespace learningProggy
         public static SQLiteConnection m_dbConnection;
         public static void connect()
         {
-            m_dbConnection = new SQLiteConnection("Data Source=KarteiDB.sqlite;Version=3;");
+            m_dbConnection = new SQLiteConnection("Data Source=db.sqlite;Version=3;");
             m_dbConnection.Open();
         }
         public static void dc() { m_dbConnection.Close(); }
